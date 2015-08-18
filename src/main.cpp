@@ -1,6 +1,7 @@
 #include "Mat.h"
 #include "aux.h"
 #include <string>
+#include <fstream>
 
 #define EG 0
 #define LU 1
@@ -54,17 +55,19 @@ int main(int argc, char* argv[])
 
 	double delta_theta = 360.0/(double)n;
 
-	Mat A(n*m, n*m);
+	Mat A(n*m, n*m, n, m);
 
 	A.LoadMatrix(delta_r, delta_theta);
 
 	for (int i = 0; i < ninst; i++) {
+		/*
 		Mat B = LoadInstance(input_file, n);
 
 		if (method == EG)
 			A.GaussianElimination(B,output_file);
 		else
 			A.LUElimination(B,output_file);
+		*/
 	}
 
 }

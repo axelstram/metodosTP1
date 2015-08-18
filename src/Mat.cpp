@@ -63,7 +63,7 @@ size_t Mat::cols() const
 
 
 
-void LoadMatrix(double delta_r, double delta_theta)
+void Mat::LoadMatrix(double delta_r, double delta_theta)
 {
 
 	for(int row = 0 ; row < rows_; row++){

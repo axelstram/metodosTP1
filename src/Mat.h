@@ -11,9 +11,8 @@ using namespace std;
 
 
 class Mat {
-
 	public:
-	    Mat(size_t rows, size_t cols);
+	    Mat(size_t rows, size_t cols, int n, int m);
 	    double& operator()(size_t i, size_t j);
 	    double operator()(size_t i, size_t j) const;
 	    Mat& operator=(const Mat& anotherMat);
@@ -26,7 +25,6 @@ class Mat {
 	    void LUElimination();
 		void LoadMatrix(double delta_r, double delta_theta);
 	private:
-
 	    size_t rows_;
 	    size_t cols_;
 	    int n_,m_; /// n = # angulos, m = # radios
