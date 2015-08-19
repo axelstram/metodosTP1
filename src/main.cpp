@@ -43,7 +43,7 @@ int main(int argc, char* argv[])
 	input_file >> s;
 	ri = stod(s);
 	input_file >> s;
-	m = stoi(s) - 1; /* lee m + 1 */
+	m = stoi(s) - 1; // lee m + 1 
 	input_file >> s;
 	n = stoi(s);
 	input_file >> s;
@@ -51,13 +51,17 @@ int main(int argc, char* argv[])
 	input_file >> s;
 	ninst = stoi(s);
 
-	double delta_r = (re-ri)/(double)m;
 
+	double delta_r = (re-ri)/(double)m;
 	double delta_theta = 360.0/(double)n;
 
-	Mat A(n*m, n*m, n, m);
+	Mat A(n, m); //crea una matriz de n*m x n*m
+	vector<double> B(n*m);
 
-	A.LoadMatrix(delta_r, delta_theta);
+	A.LoadMatrix(delta_r, delta_theta, ri); //delta_r * j + ri
+	//N de entrada, todos ceros, y los ultimos N de entrada
+
+	A.Show();
 
 	for (int i = 0; i < ninst; i++) {
 		/*
