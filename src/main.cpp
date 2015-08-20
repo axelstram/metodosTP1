@@ -59,11 +59,11 @@ int main(int argc, char* argv[])
 	input_file >> s;
 	ninst = stoi(s);
 
-cout << " r_e: " << re << "\n r_i: " << ri << "\n m: " << m << "\n n: " << n << "\n iso: " << iso << "\n ninst: " << ninst << endl;
+//cout << " r_e: " << re << "\n r_i: " << ri << "\n m: " << m << "\n n: " << n << "\n iso: " << iso << "\n ninst: " << ninst << endl;
 	double delta_r = (re-ri)/(double)m;
 	double delta_theta = 360.0/(double)n;
 
-	Mat A(n, m); //crea una matriz de n*m x n*m
+	Mat A(n*m, n*m); //crea una matriz de n*m x n*m
 	vector<double> B(n*m);
 	
 	// Relleno de B
@@ -77,9 +77,22 @@ cout << " r_e: " << re << "\n r_i: " << ri << "\n m: " << m << "\n n: " << n << 
 		}
 	}
 
-	showB(B);
-	A.LoadMatrix(delta_r, delta_theta, ri); //delta_r * j + ri
-	A.Show();
+	//showB(B);
+	//A.LoadMatrix(delta_r, delta_theta, ri); //delta_r * j + ri
+	//A.Show();
+
+	Mat prueba(3,3);
+	for (int i = 0; i < 3; ++i)
+	{
+		for (int j = 0; j < 3; ++j)
+		{
+			prueba(i,j)=i+1+j;
+		}
+	}
+
+	prueba.Show();
+	prueba.GaussianElimination();
+	prueba.Show();
 
 /*
 	for (int i = 0; i < ninst; i++) {

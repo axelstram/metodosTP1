@@ -1,7 +1,7 @@
 #include "Mat.h"
 
 
-Mat::Mat(size_t n, size_t m) : rows_(n*m), cols_(n*m), n_(n), m_(m), data_((n*m) * (n*m))
+Mat::Mat(size_t n, size_t m) : rows_(n), cols_(n), n_(n), m_(m), data_((n) * (m))
 {
 }
 
@@ -123,6 +123,29 @@ double Mat::Coefficient_j_k_plus_one(double delta_theta, double r)
 
 void Mat::GaussianElimination()
 {
+
+	Mat& thisMat = *this;
+	double coefficient;
+	//for (int actual_row = 0; actual_row < thisMat.rows()-1 /*n*m-1*/; ++actual_row)
+	//{
+		int actual_row = 0;
+		if(thisMat(actual_row, actual_row) == 0){
+			cout << "el elemento " << actual_row << " de la diagonal es cero" << endl;
+		}
+		for (int row = actual_row + 1; row < thisMat.rows(); ++row)
+		{	
+			coefficient=thisMat(row, actual_row);
+			for (int col = actual_row; col < thisMat.cols(); ++col)
+			{	
+				//cout << "pre: ["<< row << "][" << col << "] = " << thisMat(row, col) << endl;
+				//cout << "cuenta: " << thisMat(row, col) << " - " <<  thisMat(row, actual_row) << " / " << thisMat(actual_row,actual_row) << " * " << thisMat(actual_row, col) << endl;
+				thisMat(row, col) = thisMat(row, col) - ((coefficient / (thisMat(actual_row,actual_row))) * thisMat(actual_row, col));
+				//cout << "post: ["<< row << "][" << col << "] = " << thisMat(row, col) << endl;
+			}
+		}
+	//}
+
+
 
 }
 	
