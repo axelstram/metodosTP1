@@ -1,7 +1,7 @@
 #include "Mat.h"
 
 
-Mat::Mat(size_t n, size_t m) : rows_(n), cols_(n), n_(n), m_(m), data_((n) * (m))
+Mat::Mat(size_t n, size_t m) : rows_(n*m), cols_(n*m), n_(n), m_(m), data_((n*m) * (n*m))
 {
 }
 
@@ -126,9 +126,8 @@ void Mat::GaussianElimination()
 
 	Mat& thisMat = *this;
 	double coefficient;
-	//for (int actual_row = 0; actual_row < thisMat.rows()-1 /*n*m-1*/; ++actual_row)
-	//{
-		int actual_row = 0;
+	for (int actual_row = 0; actual_row < thisMat.rows()-1 /*n*m-1*/; ++actual_row)
+	{
 		if(thisMat(actual_row, actual_row) == 0){
 			cout << "el elemento " << actual_row << " de la diagonal es cero" << endl;
 		}
@@ -143,7 +142,7 @@ void Mat::GaussianElimination()
 				//cout << "post: ["<< row << "][" << col << "] = " << thisMat(row, col) << endl;
 			}
 		}
-	//}
+	}
 
 
 

@@ -63,7 +63,7 @@ int main(int argc, char* argv[])
 	double delta_r = (re-ri)/(double)m;
 	double delta_theta = 360.0/(double)n;
 
-	Mat A(n*m, n*m); //crea una matriz de n*m x n*m
+	Mat A(n, m); //crea una matriz de n*m x n*m
 	vector<double> B(n*m);
 	
 	// Relleno de B
@@ -77,24 +77,26 @@ int main(int argc, char* argv[])
 		}
 	}
 
-	//showB(B);
-	//A.LoadMatrix(delta_r, delta_theta, ri); //delta_r * j + ri
-	//A.Show();
+	showB(B);
+	A.LoadMatrix(delta_r, delta_theta, ri); //delta_r * j + ri
+	A.Show();
 
-	Mat prueba(3,3);
-	for (int i = 0; i < 3; ++i)
+	//PRUEBA PARA GAUSS
+	/*
+	Mat prueba(2,2);
+	for (int i = 0; i < 4; ++i)
 	{
-		for (int j = 0; j < 3; ++j)
+		for (int j = 0; j < 4; ++j)
 		{
-			prueba(i,j)=i+1+j;
+			prueba(i,j)=i*i+1+j*j+4*9;
 		}
 	}
-
 	prueba.Show();
 	prueba.GaussianElimination();
 	prueba.Show();
+	*/
 
-/*
+	/*
 	for (int i = 0; i < ninst; i++) {
 		Mat B = LoadInstance(input_file, n);
 
@@ -103,6 +105,6 @@ int main(int argc, char* argv[])
 		else
 			A.LUElimination(B,output_file);
 	}
-*/
+	*/
 }
 
