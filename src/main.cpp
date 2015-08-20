@@ -25,7 +25,14 @@ n indicando los valores de la temperatura en la pared interna, i.e., T i (θ 0 )
 seguidos de n valores de la temperatura en la pared externa, i.e., T e (θ 0 ),Te (θ 1 ),. . . ,T e (θ n−1 ).
 
 */
-
+void showB(vector<double> B){
+	cout << "B: ";
+	for (int i = 0; i < B.size(); ++i)
+	{
+		cout << B[i] << " ";
+	}
+	cout << endl;
+}
 
 int main(int argc, char* argv[])
 {
@@ -37,6 +44,7 @@ int main(int argc, char* argv[])
 	ifstream input_file(input_file_path);
 	ofstream output_file(output_file_path);
 	string s;
+
 
 	input_file >> s;
 	re = stod(s);
@@ -51,27 +59,37 @@ int main(int argc, char* argv[])
 	input_file >> s;
 	ninst = stoi(s);
 
-
+cout << " r_e: " << re << "\n r_i: " << ri << "\n m: " << m << "\n n: " << n << "\n iso: " << iso << "\n ninst: " << ninst << endl;
 	double delta_r = (re-ri)/(double)m;
 	double delta_theta = 360.0/(double)n;
 
 	Mat A(n, m); //crea una matriz de n*m x n*m
 	vector<double> B(n*m);
+	
+	// Relleno de B
+	for (int i = 0; i < n*m; ++i)
+	{
+		if(i < n || ((n*m)-n) <= i) {
+			input_file >> s;
+			B[i]=stod(s);
+		}else{			
+			B[i]=0.0;
+		}
+	}
 
+	showB(B);
 	A.LoadMatrix(delta_r, delta_theta, ri); //delta_r * j + ri
-	//N de entrada, todos ceros, y los ultimos N de entrada
-
 	A.Show();
 
+/*
 	for (int i = 0; i < ninst; i++) {
-		/*
 		Mat B = LoadInstance(input_file, n);
 
 		if (method == EG)
 			A.GaussianElimination(B,output_file);
 		else
 			A.LUElimination(B,output_file);
-		*/
 	}
-
+*/
 }
+
