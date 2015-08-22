@@ -6,6 +6,7 @@
 #include <iostream>
 #include <vector>
 #include <cassert>
+#include <fstream>
 
 
 using namespace std;
@@ -13,7 +14,7 @@ using namespace std;
 
 class Mat {
 	public:
-	    Mat(size_t n, size_t m);
+	    Mat(size_t rows_, size_t cols_);
 	    double& operator()(size_t i, size_t j);
 	    double operator()(size_t i, size_t j) const;
 	    Mat& operator=(const Mat& anotherMat);
@@ -22,24 +23,19 @@ class Mat {
 	    Mat& operator*(const Mat& anotherMat);
 	    size_t rows() const;
 	    size_t cols() const;
-	    void GaussianElimination();
-	    void LUElimination();
-		void LoadMatrix(double delta_r, double delta_theta, double r);
+	    Mat clone() const;
+
 		void Show();
+		void checkBandMat();
 
 	private:
-
-		double Coefficient_j_minus_one_k(double delta_r, double r);
-		double Coefficient_j_k(double delta_r, double delta_theta, double r);
-		double Coefficient_j_plus_one_k(double delta_r);
-		double Coefficient_j_k_minus_one(double delta_theta, double r);
-		double Coefficient_j_k_plus_one(double delta_theta, double r);
+		bool is_band;
+		int band_ceros_count;
 
 	    size_t rows_;
 	    size_t cols_;
-	    int n_, m_; /// n = # angulos, m = # radios
 	    vector<double> data_;
-};
+	};
  
 
 

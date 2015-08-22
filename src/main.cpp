@@ -36,6 +36,7 @@ void showB(vector<double> B){
 
 int main(int argc, char* argv[])
 {
+	/*
 	string input_file_path = argv[1];
 	string output_file_path = argv[2];
 	int method = stoi(argv[3]);
@@ -63,7 +64,7 @@ int main(int argc, char* argv[])
 	double delta_r = (re-ri)/(double)m;
 	double delta_theta = 360.0/(double)n;
 
-	Mat A(n, m); //crea una matriz de n*m x n*m
+	Mat A(n*m, n*m); //crea una matriz de n*m x n*m
 	vector<double> B(n*m);
 	
 	// Relleno de B
@@ -78,23 +79,27 @@ int main(int argc, char* argv[])
 	}
 
 	showB(B);
-	A.LoadMatrix(delta_r, delta_theta, ri); //delta_r * j + ri
+	LoadMatrix(A,delta_r, delta_theta, ri, n, m); //delta_r * j + ri
 	A.Show();
 
+*/
 	//PRUEBA PARA GAUSS
-	/*
-	Mat prueba(2,2);
-	for (int i = 0; i < 4; ++i)
-	{
-		for (int j = 0; j < 4; ++j)
-		{
-			prueba(i,j)=i*i+1+j*j+4*9;
-		}
-	}
-	prueba.Show();
-	prueba.GaussianElimination();
-	prueba.Show();
-	*/
+
+	Mat A(3, 3);
+	Mat b(3, 1);
+	LoadMatrixFromFile(A, b, "prueba");
+
+	cout << "A" << endl;
+	A.Show();
+	cout << endl << "b" << endl;
+	b.Show();
+	cout << endl;
+
+	Mat X = GaussianElimination(A, b);
+	cout << endl;
+	cout << "X" << endl;
+	X.Show();
+	
 
 	/*
 	for (int i = 0; i < ninst; i++) {
@@ -107,4 +112,3 @@ int main(int argc, char* argv[])
 	}
 	*/
 }
-
