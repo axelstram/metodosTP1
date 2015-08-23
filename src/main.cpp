@@ -3,8 +3,8 @@
 #include <string>
 #include <fstream>
 
-#define EG 0
-#define LU 1
+#define EG_METHOD 0
+#define LU_METHOD 1
 
 
 double ri;
@@ -25,14 +25,7 @@ n indicando los valores de la temperatura en la pared interna, i.e., T i (θ 0 )
 seguidos de n valores de la temperatura en la pared externa, i.e., T e (θ 0 ),Te (θ 1 ),. . . ,T e (θ n−1 ).
 
 */
-void showB(vector<double> B){
-	cout << "B: ";
-	for (int i = 0; i < B.size(); ++i)
-	{
-		cout << B[i] << " ";
-	}
-	cout << endl;
-}
+
 
 int main(int argc, char* argv[])
 {
@@ -65,28 +58,16 @@ int main(int argc, char* argv[])
 	double delta_theta = 360.0/(double)n;
 
 	Mat A(n*m, n*m); //crea una matriz de n*m x n*m
-	vector<double> B(n*m);
+	Mat b(n*m, 1);
 	
-	// Relleno de B
-	for (int i = 0; i < n*m; ++i)
-	{
-		if(i < n || ((n*m)-n) <= i) {
-			input_file >> s;
-			B[i]=stod(s);
-		}else{			
-			B[i]=0.0;
-		}
-	}
-
-	showB(B);
 	LoadMatrix(A,delta_r, delta_theta, ri, n, m); //delta_r * j + ri
-	A.Show();
-
 */
-	//PRUEBA PARA GAUSS
+	//PRUEBA NUESTRA
 
-	Mat A(3, 3);
-	Mat b(3, 1);
+	int tam = 3;
+
+	Mat A(tam, tam);
+	Mat b(tam, 1);
 	LoadMatrixFromFile(A, b, "prueba");
 
 	cout << "A" << endl;
@@ -95,20 +76,47 @@ int main(int argc, char* argv[])
 	b.Show();
 	cout << endl;
 
-	Mat X = GaussianElimination(A, b);
-	cout << endl;
-	cout << "X" << endl;
+	Mat LU(tam, tam);
+
+
+	GetLU(A, LU);
+
+	cout << endl << "LU:" << endl;
+	LU.Show();
+
+	Mat X = LUElimination(LU, b);
+	cout << endl << "X:" << endl;
 	X.Show();
-	
 
 	/*
-	for (int i = 0; i < ninst; i++) {
-		Mat B = LoadInstance(input_file, n);
-
-		if (method == EG)
-			A.GaussianElimination(B,output_file);
-		else
-			A.LUElimination(B,output_file);
-	}
+	Mat X2 = GaussianElimination(A, b);
+	cout << endl;
+	cout << "X con gauss" << endl;
+	X2.Show();
 	*/
+
+	/*
+	if (method == EG_METHOD) {		
+		for (int i = 0; i < ninst; i++) {
+			LoadInstanceOfB(input_file, n*m, n, b);	
+			Mat X = GaussianElimination(A, b);
+			cout << "A:" << endl;
+			A.Show();
+			cout << "X:" << endl;
+			X.Show();
+		}
+	} else {
+		Mat L(n*m, n*m);
+		Mat U(n*m, n*m);
+
+		GetLU(A, L, U);
+
+		for (int i = 0; i < ninst; i++) {
+			LoadInstanceOfB(input_file, n*m, n, b);
+
+			LUElimination(L, U, b);
+		}
+	}
+	
+	*/	
 }

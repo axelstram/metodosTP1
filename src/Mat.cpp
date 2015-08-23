@@ -21,13 +21,6 @@ double Mat::operator()(size_t i, size_t j) const
 
 
 
-Mat& Mat::operator=(const Mat& anotherMat)
-{
-
-}
-
-
-
 Mat& Mat::operator+(const Mat& anotherMat)
 {
 
