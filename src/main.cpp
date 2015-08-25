@@ -29,7 +29,6 @@ seguidos de n valores de la temperatura en la pared externa, i.e., T e (θ 0 ),T
 
 int main(int argc, char* argv[])
 {
-	/*
 	string input_file_path = argv[1];
 	string output_file_path = argv[2];
 	int method = stoi(argv[3]);
@@ -38,7 +37,6 @@ int main(int argc, char* argv[])
 	ifstream input_file(input_file_path);
 	ofstream output_file(output_file_path);
 	string s;
-
 
 	input_file >> s;
 	re = stod(s);
@@ -61,9 +59,9 @@ int main(int argc, char* argv[])
 	Mat b(n*m, 1);
 	
 	LoadMatrix(A,delta_r, delta_theta, ri, n, m); //delta_r * j + ri
-*/
-	//PRUEBA NUESTRA
 
+	//PRUEBA NUESTRA
+/*
 	int tam = 3;
 
 	Mat A(tam, tam);
@@ -94,29 +92,23 @@ int main(int argc, char* argv[])
 	cout << "X con gauss" << endl;
 	X2.Show();
 	*/
+	
+	for (int i = 0; i < ninst; i++) {
+		LoadInstanceOfB(input_file, n*m, n, b);	
 
-	/*
-	if (method == EG_METHOD) {		
-		for (int i = 0; i < ninst; i++) {
-			LoadInstanceOfB(input_file, n*m, n, b);	
+		if (method == EG_METHOD) {		
 			Mat X = GaussianElimination(A, b);
-			cout << "A:" << endl;
-			A.Show();
-			cout << "X:" << endl;
-			X.Show();
-		}
-	} else {
-		Mat L(n*m, n*m);
-		Mat U(n*m, n*m);
 
-		GetLU(A, L, U);
+			SaveResult(output_file, X);	
+		} else {
+			Mat LU(n*m, n*m);
 
-		for (int i = 0; i < ninst; i++) {
-			LoadInstanceOfB(input_file, n*m, n, b);
+			GetLU(A, LU);
+			Mat X = LUElimination(LU, b);
 
-			LUElimination(L, U, b);
+			SaveResult(output_file, X);
 		}
 	}
 	
-	*/	
+	
 }

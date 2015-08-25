@@ -48,6 +48,14 @@ void LoadMatrix(Mat& thisMat, double delta_r, double delta_theta, double ri, int
 
 
 
+void SaveResult(ofstream& output_file, Mat& X)
+{
+	for (int i = 0; i < X.rows(); i++)
+		output_file << X(i, 0) << endl;
+}
+
+
+
 double Coefficient_j_minus_one_k(double delta_r, double r)
 {
 	return ( (1.0 / (delta_r * delta_r)) - (1.0 / (r * delta_r)) );

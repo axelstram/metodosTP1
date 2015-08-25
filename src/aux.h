@@ -5,6 +5,8 @@ void LoadInstanceOfB(ifstream& opened_file, int size_of_b, int n, Mat& b);
  
 void LoadMatrix(Mat& thisMat, double delta_r, double delta_theta, double r, int n_, int m_);
 void LoadMatrixFromFile(Mat& A, Mat& b, string file); /*nuestro load*/
+void SaveResult(ofstream& output_file, Mat& X);	
+
 	    
 Mat GaussianElimination(Mat& A, Mat& b);
 Mat LUElimination(Mat& LU, Mat& b);
