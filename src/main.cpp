@@ -93,22 +93,19 @@ int main(int argc, char* argv[])
 	X2.Show();
 	*/
 	
+	Mat LU(n*m, n*m);
+
+	if (method == LU_METHOD)
+		GetLU(A, LU);
+
 	for (int i = 0; i < ninst; i++) {
 		LoadInstanceOfB(input_file, n*m, n, b);	
 
-		if (method == EG_METHOD) {		
+		if (method == EG_METHOD)		
 			Mat X = GaussianElimination(A, b);
-
-			SaveResult(output_file, X);	
-		} else {
-			Mat LU(n*m, n*m);
-
-			GetLU(A, LU);
+	    else
 			Mat X = LUElimination(LU, b);
-
-			SaveResult(output_file, X);
-		}
-	}
-	
-	
+		
+		SaveResult(output_file, X);	
+	}	
 }
