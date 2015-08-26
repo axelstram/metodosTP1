@@ -94,7 +94,7 @@ int main(int argc, char* argv[])
 	*/
 	
 	Mat LU(n*m, n*m);
-
+	Mat X(n*m, 1);
 	if (method == LU_METHOD)
 		GetLU(A, LU);
 
@@ -102,9 +102,9 @@ int main(int argc, char* argv[])
 		LoadInstanceOfB(input_file, n*m, n, b);	
 
 		if (method == EG_METHOD)		
-			Mat X = GaussianElimination(A, b);
+			X = GaussianElimination(A, b);
 	    else
-			Mat X = LUElimination(LU, b);
+			X = LUElimination(LU, b);
 		
 		SaveResult(output_file, X);	
 	}	
