@@ -1,0 +1,5 @@
+JUSTIFICAR :*por qué no hay que hacer pivoteo (porque es banda)
+			*por qué no puede pasar que un elemento de la diagonal se hace cero en todas las matrices resultantes al proceso EG
+			*experimentacion: crear instancias subdividiendo los radios y los angulos y obtener conclusiones
+PREGUNTAR:	*hacer todos los b de una? (o sea, cargarlos todos juntos y resolver el sistema de una)
+			*se cuenta el tiempo de cargado de las matrices (creo que habiamos dicho que no.. )
