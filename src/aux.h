@@ -1,5 +1,6 @@
 #include "Mat.h"
 #include <iomanip>      // std::setprecision
+#include <algorithm>
 
 void LoadInstanceOfB(ifstream& opened_file, int size_of_b, int n, Mat& b);
 

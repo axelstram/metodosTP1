@@ -72,6 +72,24 @@ Mat Mat::clone() const
 
 
 
+void Mat::ShowOctave()
+{
+	Mat& thisMat = *this;
+	cout << "[";
+	for (int j = 0; j < rows_; j++) {
+		for (int k = 0; k < cols_; k++) {
+			if (thisMat(j,k) == 1 || thisMat(j,k) == 0)
+				cout << thisMat(j,k) << ".000000000 ";
+			else
+				cout << thisMat(j,k) << " ";
+		}
+		cout << ";";
+	}
+	cout << "]";
+}
+
+
+
 void Mat::Show()
 {
 	Mat& thisMat = *this;
