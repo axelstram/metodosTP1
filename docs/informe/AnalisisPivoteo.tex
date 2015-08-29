@@ -1,26 +1,33 @@
-\subsection{Porque no hay que hacer pivoteo}
+\subsection{Análisis de Pivoteo}
+
+Para justificar que para el tipo de matriz banda no se produce pivoteo al aplicarse el algoritmo de Eliminación Gaussiana, analizamos propiedades varias de la matriz.
+%No sabia que poner...
 
 
+\subsubsection{A es diagonal dominante}
 %aca va la explicacion de porque A es diagonal dominate
 
-
+\subsubsection{A es no singular}
 Dada la matriz A diagonal dominante, veamos que A es no singular.
-Por absurdo supongamos que es singular, esto es, existe un $x\neq 0$ tal que x pertenece al núcleo de A.
+Por absurdo supongamos que es singular, esto es, $\exists x\neq 0$ tal que $x \in Nu(A)$.
 Como el vector es distinto a cero, existe una coordenada que es mayor al resto. Llamemosla $x_{k}$.
 
 
-Del sistema de ecuaciones Ax, tomemos la ecuacion k, que tiene esta pinta:
+Del sistema de ecuaciones Ax, tomemos la ecuacion k, que tiene esta pinta:                  
 
-$ a_{(k, 1)} * x_{1} + ... + a_{(k, n)} * x_{n} = 0 $
+$$ a_{(k, 1)} * x_{1} + a_{(k, 2)} * x_{2} +... + a_{(k, n)} * x_{n} = 0 $$\\
 
-Luego despejamos el término k y aplicamos módulo:
+Luego despejamos el término k y aplicamos módulo:\\
 
- %$ \left | a_{(k, k)} * x_{k} \right |  =
-  %\left | - \[ \sum_{j=1}^{n}a_{(k, j)} * x_{j}\] \right | $
+ $$ \mid a_{(k, k)} * x_{k} \mid  =  \left \arrowvert - \sum_{j=1,j\neq k}^{n}  a_{(k,j)} * x_{j} \right \arrowvert $$
 
-%$ 	\leq  \[ \sum_{j=1}^{n}a_{(k, j)} * x_{j}\]$
+ $$ \mid a_{(k, k)}\mid * \mid x_{k} \mid \leq \sum_{j=1,j\neq k}^{n} \mid a_{(k,j)}\mid * \mid x_{j} \mid $$
 
 
-%\begin{equation}
- $ \mid a_{(k, k)} * x_{k} \mid = \mid \sum_{j=1}^{n} (x_{i}+y_{i}) \mid $
-%\end{equation}
+ $$ \mid a_{(k, k)}\mid  = \sum_{j=1,j\neq k}^{n} \mid a_{(k,j)}\mid *  \frac{\mid x_{j} \mid}{\mid x_{k} \mid}$$\\
+
+Como cada elemento de la sumatoria es multiplicado por $\frac{\mid x_{j} \mid}{\mid x_{k} \mid}$ $\leq 1$, disminuyen su valor, con lo que la sumatoria se reduce y resulta:\\
+
+$$\mid a_{(k,k)} \mid < \sum_{j=1, j\neq k}^{n}\mid a_{(k,j)} \mid $$\\
+
+Lo que es absurdo, pues A era diagonal dominante. El absurdo provino de suponer a A singular. Luego vale que A sea no singular.
