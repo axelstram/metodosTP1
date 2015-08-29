@@ -1,0 +1,26 @@
+\subsection{Porque no hay que hacer pivoteo}
+
+
+%aca va la explicacion de porque A es diagonal dominate
+
+
+Dada la matriz A diagonal dominante, veamos que A es no singular.
+Por absurdo supongamos que es singular, esto es, existe un $x\neq 0$ tal que x pertenece al núcleo de A.
+Como el vector es distinto a cero, existe una coordenada que es mayor al resto. Llamemosla $x_{k}$.
+
+
+Del sistema de ecuaciones Ax, tomemos la ecuacion k, que tiene esta pinta:
+
+$ a_{(k, 1)} * x_{1} + ... + a_{(k, n)} * x_{n} = 0 $
+
+Luego despejamos el término k y aplicamos módulo:
+
+ %$ \left | a_{(k, k)} * x_{k} \right |  =
+  %\left | - \[ \sum_{j=1}^{n}a_{(k, j)} * x_{j}\] \right | $
+
+%$ 	\leq  \[ \sum_{j=1}^{n}a_{(k, j)} * x_{j}\]$
+
+
+%\begin{equation}
+ $ \mid a_{(k, k)} * x_{k} \mid = \mid \sum_{j=1}^{n} (x_{i}+y_{i}) \mid $
+%\end{equation}
