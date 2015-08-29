@@ -54,7 +54,7 @@ void LoadMatrix(Mat& thisMat, double delta_r, double delta_theta, double ri, int
 void SaveResult(ofstream& output_file, Mat& X)
 {
 	for (int i = 0; i < X.rows(); i++)
-		output_file << X(i, 0) << endl;
+		output_file << std::fixed << std::setprecision(6) << X(i, 0) << endl;
 }
 
 

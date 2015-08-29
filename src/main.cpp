@@ -90,8 +90,8 @@ int main(int argc, char* argv[])
 	double pi = 3.141592653589793;
 	double delta_r = (re-ri)/(double)m;
 	double delta_theta = 2*pi/(double)n;
-	cout << "delta_r " << delta_r << endl; 
-	cout << "delta_theta " << delta_theta << endl;
+	//cout << "delta_r " << delta_r << endl; 
+	//cout << "delta_theta " << delta_theta << endl;
 
 	Mat A(n*m, n*m); //crea una matriz de n*m x n*m
 	Mat b(n*m, 1);
@@ -100,7 +100,7 @@ int main(int argc, char* argv[])
 
 	LoadMatrix(A,delta_r, delta_theta, ri, n, m);
 
-	A.Show();
+	//A.Show();
 
 	if (method == LU_METHOD)
 		GetLU(A, LU);
