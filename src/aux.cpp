@@ -12,6 +12,8 @@ extern int ninst;
 
 void LoadMatrix(Mat& thisMat, double delta_r, double delta_theta, double ri, int n, int m)
 {
+	//m = j (radios)
+	//n =  k (radios)
 	for (int row = 0; row < thisMat.rows(); row++) {
 		if (row < n || row > thisMat.rows() - n - 1) { /// para los primeros n o los ultimos n relleno con los Ti y Te (caso base)
 			thisMat(row, row) = 1.0;
@@ -19,11 +21,12 @@ void LoadMatrix(Mat& thisMat, double delta_r, double delta_theta, double ri, int
 			int j = row / n;
 			int k = (row + n) % n;
 			double r = j * delta_r + ri;
-			thisMat(row, j * n + k) = Coefficient_j_minus_one_k(delta_r, r);
-			thisMat(row, ((j - 1 + m) % m) * n + k) = Coefficient_j_k(delta_r, delta_theta, r);
-			thisMat(row, ((j + 1 + m) % m) * n + k) = Coefficient_j_plus_one_k(delta_r);
-			thisMat(row, j * n + (k - 1 + n) % n) = Coefficient_j_k_minus_one(delta_theta, r);
+			thisMat(row, j * n + k) = Coefficient_j_k(delta_r, delta_theta, r);
+			thisMat(row, ((j - 1 + m % m)) * n + k) = Coefficient_j_minus_one_k(delta_r, r);
+			thisMat(row, ((j + 1 + (m+2)) % (m+2)) * n + k) = Coefficient_j_plus_one_k(delta_r); //BIEN
+ 			thisMat(row, j * n + (k - 1 + n) % n) = Coefficient_j_k_minus_one(delta_theta, r);
 			thisMat(row, j * n + (k + 1 + n) % n) = Coefficient_j_k_plus_one(delta_theta, r);
+			// 3+           1+4
 		}
 	}
 	
@@ -99,7 +102,10 @@ void LoadMatrixFromFile(Mat& A, Mat& b, string file_path)
 	f >> s;
 	int dim = stoi(s);
 
-	assert(dim == A.rows() && "Dimensiones incorrectas");
+	if (dim != A.rows()) {
+		cout << "Dimensiones incorrectas al cargar " << endl << "dim " << dim << endl << "rows(A) " << A.rows() << endl;
+		exit(1);
+	}
 
 	//Cargo A
 	for (int i = 0; i < dim; i++) {
@@ -155,9 +161,9 @@ Mat GaussianElimination(Mat& A, Mat& b)
 		}
 	}
 
-	cout << "Matriz triangulada" << endl;
-	U.Show();
-	cout << endl << endl;
+	//cout << "Matriz triangulada" << endl;
+	//U.Show();
+	//cout << endl << endl;
 
 	return BackwardSubstitution(U, b);
 }
