@@ -172,56 +172,18 @@ bool DescendingOrder(double i, double j) { return (i>j); }
 //Para el caso que la matriz U sea triangular superior
 Mat BackwardSubstitution(Mat& U, Mat& b)
 {
-/*	
 	Mat X(U.rows(), 1);
 
 	for (int i = U.rows() - 1; i >= 0; i--) {
 		double acum = 0.0;
-		double acum2 = 0.0;
-		vector<double> acumVector;
-		for (int j = i+1; j < U.rows(); j++) { //por ahi arrastramos error aca. 
-			//acum += U(i, j) * X(j, 0);
-			acumVector.push_back(U(i, j) * X(j, 0));
-		}
 
-		std::sort(acumVector.begin(), acumVector.end());
+		for (int j = i+1; j < U.rows(); j++) 
+			acum += U(i, j) * X(j, 0);
 		
-		for (int j = acumVector.size() - 1; j >= 0; j--) {
-			acum2 += acumVector[j];
-		}
-		
-		for (int j = 0; j < acumVector.size(); j++) {
-			acum += acumVector[j];
-		}
-		
-		//X(i, 0) = ((double)(1. / U(i, i)) * (b(i, 0) - acum2)); 
-		X(i, 0) = (double)(b(i, 0) - acum2) / U(i, i); 
-	
-	}
-*/
-
-
-	Mat X(U.rows(), 1);
-
-	for (int i = U.rows() - 1; i >= 0; i--) {
-		vector<double> acum;
-		X(i, 0) = b(i, 0);
-
-		for (int j = i+1; j < U.rows(); j++) {
-			acum.push_back((double)(U(i, j) * X(j, 0)));
-			//X(i, 0) = X(i, 0) - (double)(U(i, j) * X(j, 0));
-		}
-		std::sort(acum.begin(), acum.end());
-
-		
-			
-		for (int j = acum.size() - 1; j >= 0; j--) {
-			X(i, 0) -= acum[j];
-		}
-		X(i, 0) = X(i, 0) / U(i, i); 
+		X(i, 0) = (double)(b(i, 0) - acum) / U(i, i);
 	}
 
-	return X;
+	return X;	
 }
 
 
@@ -229,13 +191,13 @@ Mat BackwardSubstitution(Mat& U, Mat& b)
 //Para el caso que la matriz sea LU (y suponiendo que la diagonal son todos 1)
 Mat BackwardSubstitutionLU(Mat& LU, Mat& b)
 {
-
 	Mat X(LU.rows(), 1);
 	//hardcodeamos el primer valor porq la formula no funca para el j = 0
 	X(0,0) = b(0,0);
 
 	for (int i = 1; i < LU.rows(); i++) {
 		X(i,0) = b(i,0);
+
 		for (int j = 0; j < i; j++)
 			X(i, 0) -= (double) (LU(i,j)*X(j,0)); 
 	}

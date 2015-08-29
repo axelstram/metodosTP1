@@ -91,7 +91,7 @@ int main(int argc, char* argv[])
 	double two_pi = 6.283185307179586;
 	double delta_r = (re-ri)/(double)(m-1);
 	double delta_theta = two_pi/(double)n;
-	cout << "delta_r " << delta_r << endl; 
+	//cout << "delta_r " << delta_r << endl; 
 	//cout << "delta_theta " << delta_theta << endl;
 
 	Mat A(n*m, n*m); //crea una matriz de n*m x n*m
@@ -101,22 +101,17 @@ int main(int argc, char* argv[])
 
 	LoadMatrix(A,delta_r, delta_theta, ri, n, m);
 
-	//A.ShowOctave();
-
-
 	if (method == LU_METHOD)
 		GetLU(A, LU);
 
 	for (int i = 0; i < ninst; i++) {
 		LoadInstanceOfB(input_file, n*m, n, b);	
-	b.ShowOctave();
+
 		if (method == EG_METHOD)		
 			X = GaussianElimination(A, b);
 	    else
 			X = LUElimination(LU, b);
 		
-		cout << endl << endl;
-		X.Show();
 		SaveResult(output_file, X);	
 	}	
 	
