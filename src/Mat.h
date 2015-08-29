@@ -25,6 +25,7 @@ class Mat {
 	    Mat clone() const;
 
 		void Show();
+		void ShowOctave();
 		void checkBandMat();
 
 	private:

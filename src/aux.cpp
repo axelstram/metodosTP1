@@ -23,10 +23,9 @@ void LoadMatrix(Mat& thisMat, double delta_r, double delta_theta, double ri, int
 			double r = j * delta_r + ri;
 			thisMat(row, j * n + k) = Coefficient_j_k(delta_r, delta_theta, r);
 			thisMat(row, ((j - 1 + m % m)) * n + k) = Coefficient_j_minus_one_k(delta_r, r);
-			thisMat(row, ((j + 1 + (m+2)) % (m+2)) * n + k) = Coefficient_j_plus_one_k(delta_r); //BIEN
+			thisMat(row, ((j + 1 + (m+2)) % (m+2)) * n + k) = Coefficient_j_plus_one_k(delta_r); 
  			thisMat(row, j * n + (k - 1 + n) % n) = Coefficient_j_k_minus_one(delta_theta, r);
 			thisMat(row, j * n + (k + 1 + n) % n) = Coefficient_j_k_plus_one(delta_theta, r);
-			// 3+           1+4
 		}
 	}
 	
@@ -40,7 +39,7 @@ void LoadMatrix(Mat& thisMat, double delta_r, double delta_theta, double ri, int
 
 	for (int i = 0; i < size_of_b; ++i)
 	{
-		if(i < n || (b.cols() - n) <= i) {
+		if(i < n || (b.rows() - n) <= i) {
 			opened_file >> s;
 			b(i, 0) = stod(s);
 		}else{			
@@ -94,6 +93,7 @@ double Coefficient_j_k_plus_one(double delta_theta, double r)
 
 
 
+/* Nuestro load */
 void LoadMatrixFromFile(Mat& A, Mat& b, string file_path)
 {
 	ifstream f(file_path);
@@ -135,11 +135,11 @@ Mat GaussianElimination(Mat& A, Mat& b)
 			exit(1);
 		}
 
-		for (int row = actual_row + 1; row < U.rows(); ++row)
+		for (int row = actual_row + 1; row < U.rows(); row++)
 		{	
 			double coefficient = (double)U(row, actual_row) / (double)(U(actual_row, actual_row));
 
-			for (int col = actual_row; col < U.cols(); ++col)
+			for (int col = actual_row; col < U.cols(); col++)
 			{	
 				//cout << "pre: ["<< row << "][" << col << "] = " << thisMat(row, col) << endl;
 				//cout << "cuenta: " << thisMat(row, col) << " - " <<  thisMat(row, actual_row) << " / " << thisMat(actual_row,actual_row) << " * " << thisMat(actual_row, col) << endl;
@@ -147,12 +147,7 @@ Mat GaussianElimination(Mat& A, Mat& b)
 					//si es el primer elemento de la fila , se que tiene que dar 0 la cuenta
 				 	U(row,col) = 0.;
 				} else {
-					//paranoid mode on
-					double multiplication = (double)(coefficient * (double)U(actual_row, col));
-					double res = (double)U(row, col) - (double)multiplication;
-
-					U(row, col) = (double)res;
-					//paranoid mode off
+					U(row, col) -= coefficient * U(actual_row, col);
 				}
 				//cout << "post: ["<< row << "][" << col << "] = " << thisMat(row, col) << endl;
 			}
@@ -169,22 +164,67 @@ Mat GaussianElimination(Mat& A, Mat& b)
 }
 
 
+
+bool DescendingOrder(double i, double j) { return (i>j); }
+
+
+
 //Para el caso que la matriz U sea triangular superior
 Mat BackwardSubstitution(Mat& U, Mat& b)
 {
+/*	
 	Mat X(U.rows(), 1);
-
 
 	for (int i = U.rows() - 1; i >= 0; i--) {
 		double acum = 0.0;
-		for (int j = i+1; j < U.rows(); j++)
-			acum += U(i, j) * X(j, 0);
+		double acum2 = 0.0;
+		vector<double> acumVector;
+		for (int j = i+1; j < U.rows(); j++) { //por ahi arrastramos error aca. 
+			//acum += U(i, j) * X(j, 0);
+			acumVector.push_back(U(i, j) * X(j, 0));
+		}
+
+		std::sort(acumVector.begin(), acumVector.end());
 		
-		X(i, 0) = (double) ((double)(1. / U(i, i)) * (b(i, 0) - acum)); 
+		for (int j = acumVector.size() - 1; j >= 0; j--) {
+			acum2 += acumVector[j];
+		}
+		
+		for (int j = 0; j < acumVector.size(); j++) {
+			acum += acumVector[j];
+		}
+		
+		//X(i, 0) = ((double)(1. / U(i, i)) * (b(i, 0) - acum2)); 
+		X(i, 0) = (double)(b(i, 0) - acum2) / U(i, i); 
+	
+	}
+*/
+
+
+	Mat X(U.rows(), 1);
+
+	for (int i = U.rows() - 1; i >= 0; i--) {
+		vector<double> acum;
+		X(i, 0) = b(i, 0);
+
+		for (int j = i+1; j < U.rows(); j++) {
+			acum.push_back((double)(U(i, j) * X(j, 0)));
+			//X(i, 0) = X(i, 0) - (double)(U(i, j) * X(j, 0));
+		}
+		std::sort(acum.begin(), acum.end());
+
+		
+			
+		for (int j = acum.size() - 1; j >= 0; j--) {
+			X(i, 0) -= acum[j];
+		}
+		X(i, 0) = X(i, 0) / U(i, i); 
 	}
 
 	return X;
 }
+
+
 
 //Para el caso que la matriz sea LU (y suponiendo que la diagonal son todos 1)
 Mat BackwardSubstitutionLU(Mat& LU, Mat& b)
