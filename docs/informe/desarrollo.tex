@@ -1,6 +1,6 @@
-\subsection{Desarrollo}
+\section{Desarrollo}
 
-\subsubsection{Análisis de Coeficientes}
+\subsection{Análisis de Coeficientes}
 A partir de las aproximaciones de las derivadas parciales de la funcion $T$ distribuimos los terminos para conocer los coeficientes asociados a cada punto del cual depende el valor de la temperatura que queremos conocer para un $j,k$ dado. Se debe cumplir la siguiente ecuacion: \\
 $$t_{(j-1, k)} (\frac{1}{\Delta^2_r}-\frac{1}{r \Delta_r}) +
 t_{(j, k)} (-\frac{2}{\Delta^2_r}+\frac{1}{r \Delta_r}-\frac{2}{r^2 \Delta^2_\theta}) + 
@@ -23,13 +23,13 @@ Para este fin, utilizamos la pagina web $www.wolframalpha.com$ para encontrar la
 Con este analisis, concluimos que los coeficientes obtenidos de la ecuacion no se anulan en los casos en que el problema planteado tiene sentido.
 
 
-\subsubsection{Análisis de Pivoteo}
+\subsection{Análisis de Pivoteo}
 
 Para justificar que para el tipo de matriz banda no se produce pivoteo al aplicarse el algoritmo de Eliminación Gaussiana, analizamos propiedades varias de la matriz.
 %No sabia que poner...
 
 
-\subsubsection{A es diagonal dominante}
+\subsection{A es diagonal dominante}
 Queremos ver que A es diagonal dominante, es decir, que se cumple al siguiente inecuacion:\\
 $$\mid \frac{1}{\Delta^2_r}-\frac{1}{r \Delta_r}\mid +
 \mid \frac{1}{\Delta^2_r} \mid + 
@@ -48,7 +48,7 @@ Sumamos los terminos y obtenemos: \\
 $$\frac{2}{\Delta^2_r}-\frac{1}{r \Delta_r}+\frac{2}{r^2 \Delta^2_\theta} \leq \frac{2}{\Delta^2_r}-\frac{1}{r \Delta_r}+\frac{2}{r^2 \Delta^2_\theta}$$ \\
 Podemos observar que se cumple la inecuacion como queriamos demostrar, y en particular, vale la igualdad.
 
-\subsubsection{A es no singular}
+\subsection{A es no singular}
 Dada la matriz A diagonal dominante, veamos que A es no singular.
 Por absurdo supongamos que es singular, esto es, $\exists x\neq 0$ tal que $x \in Nu(A)$.
 Como el vector es distinto a cero, existe una coordenada que es mayor al resto. Llamemosla $x_{k}$.
@@ -78,7 +78,7 @@ Lo que es absurdo, pues A era diagonal dominante. El absurdo provino de suponer 
 
 ---------------------------------------------------------------------
 
-\subsubsection{Problemas que nos encontramos durante el desarrollo}
+\subsection{Problemas que nos encontramos durante el desarrollo}
 
 \begin{itemize}
 \item Nos encontramos con problemas a la hora de cargar la matriz A de coeficientes. Lo solucionamos realizando ejemplos de un tamaño razonable en papel, y chequeando a mano que las distintas filas estuvieran bien cargadas.
