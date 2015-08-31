@@ -252,3 +252,33 @@ void GetLU(Mat& A, Mat& LU)
 	}
 
 }
+
+void getIsotermRadiusValues(Mat& X, int angles, double isoterm, double delta_r, double ri)
+{	
+	/* 
+	* Guardo en el vector istermRadius, en la posicion i el radio de la isterma 500 para cada angulo.
+	*/
+	vector<double> isotermRadius(angles);
+
+	for (int i = 0; i < angles; ++i)
+	{
+		isotermRadius[i]=-1;
+	}
+
+	for (int i = 0; i < X.rows() - angles; ++i)
+	{
+		if(X(i,0) >= isoterm && X(i+angles,0) <= isoterm){
+			//cout << X(i,0) << " " << X(i+angles,0) << endl;
+			//cout << ri << " + " << i / angles << " * " << delta_r << " + " << (((X(i,0) - isoterm) * delta_r)/ (X(i,0) - X(i+angles,0)) )<< endl;
+			isotermRadius[i % angles] = ( ri + (i / angles)*delta_r + (((X(i,0) - isoterm) * delta_r)/ (X(i,0) - X(i+angles,0)) )); // regla de tres simple
+		}
+
+	}
+
+	for (int i = 0; i < angles; ++i)
+	{
+		cout << isotermRadius[i] << " ";
+	}
+
+}
+
