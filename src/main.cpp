@@ -2,11 +2,12 @@
 #include "aux.h"
 #include <string>
 #include <fstream>
+#include <chrono> //added
 
-#define EG_METHOD 1
-#define LU_METHOD 2
+#define EG_METHOD 0
+#define LU_METHOD 1
 
-
+bool counting_time = true;
 double ri;
 double re;
 int m;
@@ -86,7 +87,7 @@ int main(int argc, char* argv[])
 	input_file >> s;
 	ninst = stoi(s);
 
-//cout << " r_e: " << re << "\n r_i: " << ri << "\n m: " << m << "\n n: " << n << "\n iso: " << iso << "\n ninst: " << ninst << endl;
+	//cout << " r_e: " << re << "\n r_i: " << ri << "\n m: " << m << "\n n: " << n << "\n iso: " << iso << "\n ninst: " << ninst << endl;
 	//double two_pi = 3.141592653589793;
 	double two_pi = 6.283185307179586;
 	double delta_r = (re-ri)/(double)(m-1);
@@ -99,7 +100,13 @@ int main(int argc, char* argv[])
 	Mat LU(n*m, n*m);
 	Mat X (n*m, 1);
 
+
 	LoadMatrix(A,delta_r, delta_theta, ri, n, m);
+
+
+
+	//empezar a medir el tiempo
+	auto begin = std::chrono::high_resolution_clock::now();
 
 	if (method == LU_METHOD)
 		GetLU(A, LU);
@@ -112,7 +119,13 @@ int main(int argc, char* argv[])
 	    else
 			X = LUElimination(LU, b);
 		
-		SaveResult(output_file, X);	
+		if(!counting_time)SaveResult(output_file, X);	
 	}	
-	
+
+	//terminar de medir
+	auto end = std::chrono::high_resolution_clock::now();
+	if(counting_time) cout<< chrono::duration_cast<std::chrono::milliseconds>(end-begin).count() << endl;
+
+
+
 }
