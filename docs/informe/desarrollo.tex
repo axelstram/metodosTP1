@@ -1,5 +1,52 @@
 \section{Desarrollo}
 
+\subsection{Planteo del Sistema}
+
+
+
+\begin{wrapfigure}{r}{0.5\textwidth}
+  \vspace{-20pt}
+  \begin{center}
+    \includegraphics[scale= 0.4]{../Horno.png}
+  \end{center}
+  \vspace{-20pt}
+  \caption{Corte del horno}
+  \vspace{-10pt}
+  \label{fig:corteHorno}
+\end{wrapfigure}
+
+
+Una instancia del problema equivale a un corte del horno como se ilustra en la figura ~\ref{fig:corteHorno}. Dado que la medición de temperatura en el horno puede realizarse en infinitos puntos, discretizamos el problema fijando la ubicación de los mismos de la siguiente manera; Dividimos el horno en \textbf{\textit{n}} cantidad de ángulos de tamaño $\Delta_{\theta}$ y en \textbf{\textit{m + 1}} cantidad de radios, de tamaño $\Delta_{r}$. Analizaremos las temperaturas en los puntos donde se unen las divisiones entre ángulos y radios. Recordemos que los puntos de la pared interna y externa son dato.\\
+\\
+
+La temperatura en un punto $t_{(j,k)}$, con $j \in [0, m]$ y $k \in [0, n)$ estará determinado por la ecuación de Laplace descripta a continuación:
+
+
+$$ \frac{\partial^{2}T(r,\theta)}{\partial r^{2}} + \frac{1}{r} \frac{\partial T(r,\theta)}{\partial r} + \frac{1}{r^{2}} \frac{\partial^{2}T(r,\theta)}{\partial \theta^{2}} = 0$$\\
+
+Sin embargo utilizaremos una aproximación de esta función que depende de los cuatro puntos que rodean a $t_{(j,k)}$:
+
+
+$$ \frac{t_{(j-1,k)} - 2t_{(j,k)} + t_{(j+1,k)}}{\Delta_{r} ^{2}} + \frac{1}{r} \frac{t_{(j,k)} - t_{(j-1,k)}}{\Delta_{r}} + \frac{1}{r^{2}} \frac{t_{(j,k-1)} - 2t_{(j,k)} + t_{(j,k+1)}}{\Delta_{\theta} ^{2}} = 0$$
+
+Despejamos las incógnitas $t_{(j,k)}$, $t_{(j+1,k)}$, $t_{(j-1,k)}$, $t_{(j,k+1)}$ y $t_{(j,k-1)}$ para obtener una ecuación (un sistema de ecuaciones) que dependa de ellas. Resulta la siguiente fórmula:
+
+
+
+$$  t_{(j,k)} (-\frac{2}{\Delta^2_r}+\frac{1}{r \Delta_r}-\frac{2}{r^2 \Delta^2_\theta}) + t_{(j+1,k)} (\frac{1}{\Delta^2_r}) + t_{(j-1,k)} (\frac{1}{\Delta^2_r}-\frac{1}{r \Delta_r}) + t_{(j,k+1)} (\frac{1}{r^2 \Delta^2_\theta}) + t_{(j,k-1)} (\frac{1}{r^2 \Delta^2_\theta}) = 0$$ \\
+
+
+Una vez planteadas estas ecuaciones para cada $ t_{(j,k)} $, resolvemos que el sistema $Ax = b$ estará formado por $n*m$ ecuaciones con la misma cantidad de incógnitas. El valor lo justificamos debido a la cantidad de combinaciones entre los índices j y k (cantidad de ángulos por cantidad de radios). Otra forma de razonar este resultado es pensando que en cada anillo generado por la partición del horno en \textbf{\textit{m + 1}} radios, habrá \textbf{\textit{n}} incógnitas generadas a su vez por la particion en ángulos. \\
+Esta cantidad incluye los valores $t_{(0,k)}$ y $t_{(n-1,k)}$ (los valores de temperatura en la pared interior y exterior respectivamente), por lo que en sus ecuaciones habrá un único coeficiente con valor 1 en la posición que corresponde a estas incógnitas y su valor b será el que se pase por parámetro. Para el resto de los $t_{(j,k)}$ los coeficientes corresponderan a los coeficientes descriptos en la ecuación de arriba, y su b será cero, también respetando dicha ecuación.
+
+\subsection{Orden de los coeficientes}
+
+Para conseguir una matriz banda, decidimos ordenar los coeficientes de manera creciente respecto al índice \textbf{\textit{j}} para los radios, y luego respecto a \textbf{\textit{k}} el índice de los ángulos. Para ilustrar el orden impuesto, exponemos el siguiente ejemplo
+
+
+
+%---------------------------------------------------------------------
+
 \subsection{Análisis de Coeficientes}
 A partir de las aproximaciones de las derivadas parciales de la función $T$ distribuimos los términos para conocer los coeficientes asociados a cada punto del cual depende el valor de la temperatura que queremos conocer para un $j,k$ dado. Se debe cumplir la siguiente ecuación: \\
 $$t_{(j-1, k)} (\frac{1}{\Delta^2_r}-\frac{1}{r \Delta_r}) +
@@ -22,6 +69,7 @@ Para este fin, utilizamos la página web $www.wolframalpha.com$ para encontrar l
 %http://www.wolframalpha.com/input/?i=sqrt%28x^2+y^4+-+16+x^2+y%29+%2F+%284*y^2%29+%3E%3D+3x%2F4
 Con este análisis, concluimos que los coeficientes obtenidos de la ecuación no se anulan en los casos en que el problema planteado tiene sentido.
 
+%---------------------------------------------------------------------
 
 \subsection{Análisis de Pivoteo}
 
@@ -88,6 +136,6 @@ Lo que es absurdo, pues A era diagonal dominante. El absurdo provino de suponer 
 \begin{itemize}
 \item Nos encontramos con problemas a la hora de cargar la matriz A de coeficientes. Lo solucionamos realizando ejemplos de un tamaño razonable en papel, y chequeando a mano que las distintas filas estuvieran bien cargadas.
 
-\item Problemas de precisión numérica. Inicialmente los resultados de los\ tests diferían con los resultados de la cátedra. Debido a los problemas inherentes a la aritmética de punto flotante, comenzamos experimentando con distintas maneras de realizar la sumatoria (ordenando los números de mayor a menor y de menor a mayor), ya que pensabamos que estabamos arrastrando un error. Descubrimos que las distintas maneras de realizar las sumatorias diferían en menos de $$0,00001$$, por lo que concluímos que no estabamos arrastrando errores en las cuentas. Finalmente descubrimos que el error estaba en que la variable $$m$$ en realidad era $$m+1$$, y no teníamos eso en cuenta a la hora de calcular $$\Delta r$$.
+\item Problemas de precisión numérica. Inicialmente los resultados de los\ tests diferían con los resultados de la cátedra. Debido a los problemas inherentes a la aritmética de punto flotante, comenzamos experimentando con distintas maneras de realizar la sumatoria (ordenando los números de mayor a menor y de menor a mayor), ya que pensabamos que estabamos arrastrando un error. Descubrimos que las distintas maneras de realizar las sumatorias diferían en menos de $0,00001$, por lo que concluímos que no estabamos arrastrando errores en las cuentas. Finalmente descubrimos que el error estaba en que la variable $m$ en realidad era $m+1$, y no teníamos eso en cuenta a la hora de calcular $\Delta r$.
 
 \end{itemize}
