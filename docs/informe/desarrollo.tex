@@ -41,9 +41,35 @@ Esta cantidad incluye los valores $t_{(0,k)}$ y $t_{(n-1,k)}$ (los valores de te
 
 \subsection{Orden de los coeficientes}
 
-Para conseguir una matriz banda, decidimos ordenar los coeficientes de manera creciente respecto al índice \textbf{\textit{j}} para los radios, y luego respecto a \textbf{\textit{k}} el índice de los ángulos. Para ilustrar el orden impuesto, exponemos el siguiente ejemplo
+Para conseguir una matriz banda, decidimos ordenar los coeficientes de manera creciente respecto al índice de los radios \textbf{\textit{j}} y luego respecto a \textbf{\textit{k}} el índice de los ángulos. Para ilustrar el orden impuesto, exponemos el siguiente ejemplo:
+
+Sea $\Delta_{r} = \Delta{\theta} = 1$, $\textbf{\textit{m + 1}} = \textbf{\textit{n}} = 3$ el orden resultante será 
+
+$$ t_{(0,0)} t_{(0,1)} t_{(0,2)} ...... t_{(2,0)} t_{(2,1)} t_{(2,2)} $$
+
+Y la matriz de coeficientes queda como la siguiente:\\
+$
+\begin{matrix}
+  1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+  0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+  0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0\\
+  \frac{2}{3} & 0 & 0 & \frac{-17}{9} & \frac{1}{9} & \frac{1}{9} & 1 & 0 & 0\\
+  0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+  0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+  0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0\\
+  0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0\\
+  0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1
+ \end{matrix}
+$
 
 
+
+
+\begin{figure}[h]
+    \includegraphics[scale= 0.4]{imagenes/figura1.png}
+  \caption{Corte del horno}
+  \label{fig:corteHorno}
+\end{figure}
 
 %---------------------------------------------------------------------
 
@@ -73,8 +99,8 @@ Con este análisis, concluimos que los coeficientes obtenidos de la ecuación no
 
 \subsection{Análisis de Pivoteo}
 
-Para justificar que en la matriz banda no se produce pivoteo al aplicarse el algoritmo de Eliminación Gaussiana, procedemos a demostrar que la matriz banda es diagonal dominante. Con esto llegamos a la conclusión de que es no singular y luego....
-%TODO: no se como sigue el hilo, claramente falta terminarlo. Se que si demostramos que tiene factorizacin LU entonces por una propiedad vista en clase, las submatrices ppales son no singulares (inversibles), por lo tanto podriamos aplicar el teorema ese raro que encontro axel del que no tenemos nada. Pero si no lo usamos que haciamos??
+Para justificar que en la matriz banda no se produce pivoteo al aplicarse el algoritmo de Eliminación Gaussiana, procedemos a demostrar que la matriz banda es diagonal dominante. Con esto llegamos a la conclusión de que es no singular. Con esto se tiene  que la matriz tiene factorización LU, con lo cual no se produce pivoteo en la E.G.
+
 
 %---------------------------------------------------------------------
 
@@ -126,8 +152,9 @@ $$\mid a_{(k,k)} \mid < \sum_{j=1, j\neq k}^{n}\mid a_{(k,j)} \mid $$\\
 
 Lo que es absurdo, pues A era diagonal dominante. El absurdo provino de suponer que A es singular. Luego vale que A es no singular.
 
+%---------------------------------------------------------------------
 
-
+\subsubsection{A tiene factorización LU}
 
 %---------------------------------------------------------------------
 
