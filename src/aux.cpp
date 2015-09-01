@@ -237,14 +237,8 @@ void GetLU(Mat& A, Mat& LU)
 				if (col == actual_row) {  
 					//si es el primer elemento de la fila , se que tiene que dar 0 la cuenta
 				 	LU(row, col) = coefficient;
-
 				} else {
-					//paranoid mode on
-					double multiplication = (double)(coefficient * (double)LU(actual_row, col));
-					double res = (double)LU(row, col) - (double)multiplication;
-
-					LU(row, col) = (double)res;
-					//paranoid mode off
+					LU(row, col) -= coefficient * LU(actual_row, col);
 				}
 				//cout << "post: ["<< row << "][" << col << "] = " << thisMat(row, col) << endl;
 			}
