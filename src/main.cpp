@@ -96,7 +96,7 @@ void run (string input_file_path, string output_file_path, int method){
 	Mat X (n*m, 1);
 
 	LoadMatrix(A,delta_r, delta_theta, ri, n, m);
-
+	
 	if (method == LU_METHOD)
 		GetLU(A, LU);
 
@@ -165,7 +165,7 @@ void test (string tests_dir, int method){
 		Mat X (n*m, 1);
 
 		LoadMatrix(A,delta_r, delta_theta, ri, n, m);
-
+		
 		long int total_time = 0;
 		//empezar a medir el tiempo
 		auto begin = std::chrono::high_resolution_clock::now();
@@ -210,17 +210,16 @@ void test (string tests_dir, int method){
 
 int main(int argc, char* argv[])
 {
-	//prueba();
+/*
 	string tests_dir = argv[1];
 	int method = stoi(argv[2]);
 	test(tests_dir,method);
 
+*/
 
-
-/*
 	string input_file_path = argv[1];
 	string output_file_path = argv[2];
 	int method = stoi(argv[3]);
 	run(input_file_path,output_file_path,method);
-*/
+
 }
