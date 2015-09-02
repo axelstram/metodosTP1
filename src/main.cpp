@@ -35,8 +35,6 @@ seguidos de n valores de la temperatura en la pared externa, i.e., T e (θ 0 ),T
 
 
 void test (string tests_dir, int method){
-
-
 /*
     string command = "ls " + tests_dir + " > tests_files.txt";
     cout<<command<<endl;
@@ -127,23 +125,21 @@ void test (string tests_dir, int method){
 int main(int argc, char* argv[])
 {
 
-	string tests_dir = argv[1];
-	int method = stoi(argv[2]);
-	test(tests_dir,method);
+	// string tests_dir = argv[1];
+	// int method = stoi(argv[2]);
+	// test(tests_dir,method);
 
 
-	// if (argc != 4)
-	// {
-	// 	yoda();
-	// 	return -1;
-	// }
+	if (argc != 4)
+	{
+		yoda();
+		return -1;
+	}
 
-	// string input_file_path = argv[1];
-	// string output_file_path = argv[2];
-	// int method = stoi(argv[3]);
-	// run(input_file_path,output_file_path,method);
+	string input_file_path = argv[1];
+	string output_file_path = argv[2];
+	int method = stoi(argv[3]);
+	run(input_file_path,output_file_path,method);
 
 	return 0;
 }
-
-
