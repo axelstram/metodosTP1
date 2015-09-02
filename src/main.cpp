@@ -28,6 +28,7 @@ n indicando los valores de la temperatura en la pared interna, i.e., T i (θ 0 )
 seguidos de n valores de la temperatura en la pared externa, i.e., T e (θ 0 ),Te (θ 1 ),. . . ,T e (θ n−1 ).
 
 */
+
 void prueba(){
 
 	//PRUEBA NUESTRA
@@ -67,6 +68,8 @@ void run (string input_file_path, string output_file_path, int method){
 	//Load input parameters
 	ifstream input_file(input_file_path);
 	ofstream output_file(output_file_path);
+	ofstream output_file_isoterm(output_file_path+".sol.isoterma"); // Guarda los valores de la isoterma PATH_OUT.sol.isoterma
+
 	string s;
 
 	input_file >> s;
@@ -110,7 +113,7 @@ void run (string input_file_path, string output_file_path, int method){
 			X = LUElimination(LU, b);
 
 		SaveResult(output_file, X);	
-
+		getIsotermRadiusValues(X, n, iso, delta_r, ri, output_file_isoterm);
 	}	
 }
 
@@ -216,10 +219,26 @@ int main(int argc, char* argv[])
 	test(tests_dir,method);
 
 */
+	if (argc != 4)
+	{
+		yoda();
+		return -1;
+	}
 
 	string input_file_path = argv[1];
 	string output_file_path = argv[2];
 	int method = stoi(argv[3]);
 	run(input_file_path,output_file_path,method);
 
+	return 0;
+}
+
+void yoda()
+{
+	cout
+	<< "    __.-._" << endl
+	<< "    '-._\"7' " << endl
+	<< "     /'.-c        \"usando mal el programa estás.  ./tp [input_file] [output_file] [method(Gauss 0/ LU 1)] correr debes" << endl
+	<< "     |  /T          " << endl
+	<< "snd _)_/LI" << endl << endl;
 }

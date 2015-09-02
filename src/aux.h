@@ -24,4 +24,5 @@ double Coefficient_j_plus_one_k(double delta_r);
 double Coefficient_j_k_minus_one(double delta_theta, double r);
 double Coefficient_j_k_plus_one(double delta_theta, double r);
 
-void getIsotermRadiusValues(Mat& X, int angles, double isoterm, double delta_r, double ri);
+void getIsotermRadiusValues(Mat& X, int angles, double isoterm, double delta_r, double ri, ofstream& output_file);
+void yoda();

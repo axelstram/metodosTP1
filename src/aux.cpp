@@ -247,7 +247,7 @@ void GetLU(Mat& A, Mat& LU)
 
 }
 
-void getIsotermRadiusValues(Mat& X, int angles, double isoterm, double delta_r, double ri)
+void getIsotermRadiusValues(Mat& X, int angles, double isoterm, double delta_r, double ri, ofstream& output_file)
 {	
 	/* 
 	* Guardo en el vector istermRadius, en la posicion i el radio de la isterma 500 para cada angulo.
@@ -271,7 +271,7 @@ void getIsotermRadiusValues(Mat& X, int angles, double isoterm, double delta_r, 
 
 	for (int i = 0; i < angles; ++i)
 	{
-		cout << isotermRadius[i] << " ";
+		output_file << std::fixed << std::setprecision(6) << isotermRadius[i] << endl;
 	}
 
 }
