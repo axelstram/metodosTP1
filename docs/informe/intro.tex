@@ -1,13 +1,30 @@
 \section{Introducción Teórica}
 
 \subsection{El Problema y su representación}
+Queremos medir temperaturas de un horno industrial cilíndrico utilizado para fundir metales. Dicho horno tiene una pared interior y una exterior, cuyas temperaturas (la de las paredes) son conocidas en determinados puntos. Sabemos que la pared exterior tiene un límite de temperatura máxima, y nuestro objetivo es determinar si dicha temperatura máxima es alcanzada o no. Para ello, buscamos los puntos en el horno cuya temperatura alcance los 500 grados celcius.  Si esta temperatura es cercana al borde exterior se corre peligro por parte de los trabajadores de una hipotética fábrica que utilice dicho horno.
 
-El problema comienza con un horno industrial cilíndrico utilizado para fundir metales. Dicho horno tiene una pared interior y una exterior, cuyas temperaturas (la de las paredes) son conocidas en determinados puntos. Sabemos que la pared exterior tiene un límite de temperatura máxima, y nuestro objetivo es determinar si dicha temperatura máxima es alcanzada o no. Para ello, buscamos los puntos en el horno cuya temperatura alcance los 500 grados celcius. Si esta temperatura es cercana al borde exterior se corre peligro por parte de los trabajadores de una hipotética fábrica que utilice dicho horno.\\
+El problema se reduce a determinar dónde se encuentra la isoterma 500 en un círculo, como el que se ve en la figura, que representa un corte del horno. Las pared externa del horno es la circunferencia, y la pared interna es la circunferencia del circulo interno.
+
+% agregar grafico que esta en el TPPPPPPPPPPPPPPPPPPPPPPPPPPP !!!!!!!!!!
+
+
+
+\\
 
 
 \subsection{Solucionando el problema}
 
-Dadas las herramientas aprendidas en la materia (sistemas de ecuaciones lineales, y sus métodos de solución, como Eliminación Gaussiana o factorización LU) queremos representar las temperaturas como incógnitas de un sistema lineal de ecuaciones. Una vez logrado este objetivo (explicado en secciones siguientes) utilizamos dichas herramientas.
+Usando las herramientas aprendidas en la materia (sistemas de ecuaciones lineales, y sus métodos de solución, como Eliminación Gaussiana o factorización LU) queremos representar las temperaturas en distintos puntos del horno como incógnitas de un sistema lineal de ecuaciones que resolveremos.
+ Para esto vamos a discretizar el espacio para tener finitas incógnitas, y vamos a usar ecuaciones de calor y la información de las temperaturas en finitos puntos de las paredes y así armar la matriz con los coeficientes del sistema.
+
+ %explicar la discretizacion
+
+ % explicar las ecuaciones de calor
+
+
+
+
+A continuación hay una breve introducción a los algoritmos conocidos y teoría que aplicamos y usamos en el trabajo.
 
 \subsubsection{Eliminación Gaussiana}
 Dada una matriz A $\in R^{nxn}$ queremos resolver el sistema $Ax = b$. El algoritmo de Eliminación Gaussiana se usa para simplificar el sistema de ecuaciones ya que produce una matriz triangular superior equivalente a la original. Esto facilita el despeje de las incógnitas con el uso de otro algoritmo llamado Backward Substitution. Las tres operaciones principales que se llevan a cabo son, suma entre filas, multiplicación de una fila por un coeficiente distinto de cero e intercambio de filas. Dichas operaciones mantienen la equivalencia.
@@ -18,4 +35,4 @@ El método Backward Substitution consiste en la obtención de los valores de las
 \subsubsection{Factorización LU}
 El algoritmo de Factorización LU surge ante el problema que se presenta cuando queremos resolver un sistema de ecuaciones similar a uno anteriormente resuelto. Dado el sistema de ecuaciones $Ax = b$, una vez obtenida la matriz triangulada, no queda registro alguno de las operaciones realizadas. Si estas fueran guardadas de alguna manera, podríamos reflejarlas en $b^{*}$  para cada nuevo sistema $Ax = b^{*}$. Repetir E.G. tendría un costo adicional de $O(n^{3})$, sin embargo con la factorización LU este costo solo se tiene una sola vez.
 
-
+%poner referencias a libros o algo de estos algoritmos.
