@@ -282,9 +282,9 @@ void yoda()
 	cout
 	<< "    __.-._" << endl
 	<< "    '-._\"7' " << endl
-	<< "     /'.-c        \"usando mal el programa estas.  ./tp [input_file] [output_file] [method(Gauss 0/ LU 1)] correr debes" << endl
-	<< "     |  /T          " << endl
-	<< "snd _)_/LI" << endl << endl;
+	<< "     /'.-c        \"usando mal el programa estas.  " << endl
+	<< "     |  /T          ./tp [input_file] [output_file] [method(Gauss 0/ LU 1)]" << endl
+	<< "snd _)_/LI          correr debes\"" << endl << endl;
 }
 
 
