@@ -6,8 +6,7 @@
 #include <chrono> //added
 #include <stdio.h>
 #include <stdlib.h>
-#define EG_METHOD 0
-#define LU_METHOD 1
+
 
 bool counting_time = true;
 double ri;
@@ -29,93 +28,9 @@ seguidos de n valores de la temperatura en la pared externa, i.e., T e (θ 0 ),T
 
 */
 
-void prueba(){
-
-	//PRUEBA NUESTRA
-
-	int tam = 3;
-
-	Mat A(tam, tam);
-	Mat b(tam, 1);
-	LoadMatrixFromFile(A, b, "./tests/nuestros/test1_3x3");
-
-	cout << "A" << endl;
-	A.Show();
-	cout << endl << "b" << endl;
-	b.Show();
-	cout << endl;
-
-	/*
-	Mat X2 = GaussianElimination(A, b);
-	cout << endl;
-	cout << "X con gauss" << endl;
-	X2.Show();
-	*/
-
-	//Mat LU(tam, tam);
-/*
-	GetLU(A, LU);
-	cout << endl << "LU:" << endl;
-	LU.Show();
-	//Mat X = LUElimination(LU, b);
-*/
-	Mat X = GaussianElimination(A,b);
-	X.Show();
-}
-
-void run (string input_file_path, string output_file_path, int method){
-
-	//Load input parameters
-	ifstream input_file(input_file_path);
-	ofstream output_file(output_file_path);
-	ofstream output_file_isoterm(output_file_path+".sol.isoterma"); // Guarda los valores de la isoterma PATH_OUT.sol.isoterma
-
-	string s;
-
-	input_file >> s;
-	ri = stod(s);
-	input_file >> s;
-	re = stod(s);
-	input_file >> s;
-	m = stoi(s); // lee m + 1 
-	input_file >> s;
-	n = stoi(s);
-	input_file >> s;
-	iso = stod(s);
-	input_file >> s;
-	ninst = stoi(s);
-
-	//cout << " r_e: " << re << "\n r_i: " << ri << "\n m: " << m << "\n n: " << n << "\n iso: " << iso << "\n ninst: " << ninst << endl;
-	//double two_pi = 3.141592653589793;
-	double two_pi = 6.283185307179586;
-	double delta_r = (re-ri)/(double)(m-1);
-	double delta_theta = two_pi/(double)n;
-	//cout << "delta_r " << delta_r << endl; 
-	//cout << "delta_theta " << delta_theta << endl;
-
-	Mat A(n*m, n*m); //crea una matriz de n*m x n*m
-	Mat b(n*m, 1);
-	Mat LU(n*m, n*m);
-	Mat X (n*m, 1);
-
-	LoadMatrix(A,delta_r, delta_theta, ri, n, m);
-	
-	if (method == LU_METHOD)
-		GetLU(A, LU);
 
 
-	for (int i = 0; i < ninst; i++) {
-		LoadInstanceOfB(input_file, n*m, n, b);	
 
-		if (method == EG_METHOD)		
-			X = GaussianElimination(A, b);
-	    else
-			X = LUElimination(LU, b);
-
-		SaveResult(output_file, X);	
-		getIsotermRadiusValues(X, n, iso, delta_r, ri, output_file_isoterm);
-	}	
-}
 
 
 
@@ -154,13 +69,11 @@ void test (string tests_dir, int method){
 		input_file >> s;
 		ninst = stoi(s);
 
-		//cout << " r_e: " << re << "\n r_i: " << ri << "\n m: " << m << "\n n: " << n << "\n iso: " << iso << "\n ninst: " << ninst << endl;
-		//double two_pi = 3.141592653589793;
+
 		double two_pi = 6.283185307179586;
 		double delta_r = (re-ri)/(double)(m-1);
 		double delta_theta = two_pi/(double)n;
-		//cout << "delta_r " << delta_r << endl; 
-		//cout << "delta_theta " << delta_theta << endl;
+
 
 		Mat A(n*m, n*m); //crea una matriz de n*m x n*m
 		Mat b(n*m, 1);
@@ -213,32 +126,24 @@ void test (string tests_dir, int method){
 
 int main(int argc, char* argv[])
 {
-/*
+
 	string tests_dir = argv[1];
 	int method = stoi(argv[2]);
 	test(tests_dir,method);
 
-*/
-	if (argc != 4)
-	{
-		yoda();
-		return -1;
-	}
 
-	string input_file_path = argv[1];
-	string output_file_path = argv[2];
-	int method = stoi(argv[3]);
-	run(input_file_path,output_file_path,method);
+	// if (argc != 4)
+	// {
+	// 	yoda();
+	// 	return -1;
+	// }
+
+	// string input_file_path = argv[1];
+	// string output_file_path = argv[2];
+	// int method = stoi(argv[3]);
+	// run(input_file_path,output_file_path,method);
 
 	return 0;
 }
 
-void yoda()
-{
-	cout
-	<< "    __.-._" << endl
-	<< "    '-._\"7' " << endl
-	<< "     /'.-c        \"usando mal el programa estás.  ./tp [input_file] [output_file] [method(Gauss 0/ LU 1)] correr debes" << endl
-	<< "     |  /T          " << endl
-	<< "snd _)_/LI" << endl << endl;
-}
+

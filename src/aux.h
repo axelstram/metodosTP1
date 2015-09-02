@@ -1,6 +1,7 @@
 #include "Mat.h"
 #include <iomanip>      // std::setprecision
 #include <algorithm>
+#include "global_variables.h"
 
 void LoadInstanceOfB(ifstream& opened_file, int size_of_b, int n, Mat& b);
 
@@ -25,4 +26,12 @@ double Coefficient_j_k_minus_one(double delta_theta, double r);
 double Coefficient_j_k_plus_one(double delta_theta, double r);
 
 void getIsotermRadiusValues(Mat& X, int angles, double isoterm, double delta_r, double ri, ofstream& output_file);
+
+
+/*FUNCIONES QUE ANTES ESTABAN EN EL MAIN*/
+
 void yoda();
+
+void prueba(); //toma una matriz de nuestros tests y corre gauss y lu
+
+void run (string input_file_path, string output_file_path, int method);

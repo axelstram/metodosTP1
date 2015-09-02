@@ -1,6 +1,7 @@
 #include "aux.h"
 
 
+
 extern int ri;
 extern int re;
 extern int m;
@@ -273,3 +274,98 @@ void getIsotermRadiusValues(Mat& X, int angles, double isoterm, double delta_r, 
 
 }
 
+/////////////////////////////////////////////////////////////7
+/*Funciones que antes estaban en main cpp*/
+
+void yoda()
+{
+	cout
+	<< "    __.-._" << endl
+	<< "    '-._\"7' " << endl
+	<< "     /'.-c        \"usando mal el programa estas.  ./tp [input_file] [output_file] [method(Gauss 0/ LU 1)] correr debes" << endl
+	<< "     |  /T          " << endl
+	<< "snd _)_/LI" << endl << endl;
+}
+
+
+void prueba(){
+
+	//PRUEBA NUESTRA
+
+	int tam = 3;
+
+	Mat A(tam, tam);
+	Mat b(tam, 1);
+	LoadMatrixFromFile(A, b, "./tests_nuestros/test1_3x3");
+
+	cout << "A" << endl;
+	A.Show();
+	cout << endl << "b" << endl;
+	b.Show();
+	cout << endl;
+
+
+	//prueba LU
+	//Mat LU(tam, tam);
+/*
+	GetLU(A, LU);
+	cout << endl << "LU:" << endl;
+	LU.Show();
+	//Mat X = LUElimination(LU, b);
+*/
+	
+	Mat X = GaussianElimination(A,b);
+	X.Show();
+}
+
+
+void run (string input_file_path, string output_file_path, int method){
+
+	//Load input parameters
+	ifstream input_file(input_file_path);
+	ofstream output_file(output_file_path);
+	ofstream output_file_isoterm(output_file_path+".sol.isoterma"); // Guarda los valores de la isoterma PATH_OUT.sol.isoterma
+
+	string s;
+
+	input_file >> s;
+	ri = stod(s);
+	input_file >> s;
+	re = stod(s);
+	input_file >> s;
+	m = stoi(s); // lee m + 1 
+	input_file >> s;
+	n = stoi(s);
+	input_file >> s;
+	iso = stod(s);
+	input_file >> s;
+	ninst = stoi(s);
+
+	
+	double two_pi = 6.283185307179586;
+	double delta_r = (re-ri)/(double)(m-1);
+	double delta_theta = two_pi/(double)n;
+
+	Mat A(n*m, n*m); //crea una matriz de n*m x n*m
+	Mat b(n*m, 1);
+	Mat LU(n*m, n*m);
+	Mat X (n*m, 1);
+
+	LoadMatrix(A,delta_r, delta_theta, ri, n, m);
+	
+	if (method == LU_METHOD)
+		GetLU(A, LU);
+
+
+	for (int i = 0; i < ninst; i++) {
+		LoadInstanceOfB(input_file, n*m, n, b);	
+
+		if (method == EG_METHOD)		
+			X = GaussianElimination(A, b);
+	    else
+			X = LUElimination(LU, b);
+
+		SaveResult(output_file, X);	
+		getIsotermRadiusValues(X, n, iso, delta_r, ri, output_file_isoterm);
+	}	
+}
