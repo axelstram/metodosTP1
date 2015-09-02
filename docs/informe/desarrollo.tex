@@ -3,22 +3,6 @@
 \subsection{Planteo del Sistema}
 
 
-
-\begin{wrapfigure}{r}{0.5\textwidth}
-  \vspace{-20pt}
-  \begin{center}
-    \includegraphics[scale= 0.4]{../Horno.png}
-  \end{center}
-  \vspace{-20pt}
-  \caption{Corte del horno}
-  \vspace{-10pt}
-  \label{fig:corteHorno}
-\end{wrapfigure}
-
-
-Una instancia del problema equivale a un corte del horno como se ilustra en la figura ~\ref{fig:corteHorno}. Dado que la medición de temperatura en el horno puede realizarse en infinitos puntos, discretizamos el problema fijando la ubicación de los mismos de la siguiente manera; Dividimos el horno en \textbf{\textit{n}} cantidad de ángulos de tamaño $\Delta_{\theta}$ y en \textbf{\textit{m + 1}} cantidad de radios, de tamaño $\Delta_{r}$. Analizaremos las temperaturas en los puntos donde se unen las divisiones entre ángulos y radios. Recordemos que los puntos de la pared interna y externa son dato.\\
-\\
-
 La temperatura en un punto $t_{(j,k)}$, con $j \in [0, m]$ y $k \in [0, n)$ estará determinado por la ecuación de Laplace descripta a continuación:
 
 
@@ -44,23 +28,19 @@ Esta cantidad incluye los valores $t_{(0,k)}$ y $t_{(n-1,k)}$ (los valores de te
 
 \subsection{Orden de los coeficientes}
 
+%que es una matriz banda
+
 Para conseguir una matriz banda, decidimos ordenar los coeficientes de manera creciente respecto al índice de los radios \textbf{\textit{j}} y luego respecto a \textbf{\textit{k}} el índice de los ángulos. Para ilustrar el orden impuesto, exponemos el siguiente ejemplo:
 
 Sea $\Delta_{r} = 1$,  $\Delta{\theta} = \frac{\pi}{2}$, $\textbf{\textit{m + 1}} = \textbf{\textit{n}} = 4$ el orden resultante será 
 
 $$ t_{(0,0)} t_{(0,1)} t_{(0,2)} ...... t_{(2,0)} t_{(2,1)} t_{(2,2)} $$
 
-Y la matriz de coeficientes queda como la siguiente:\\
 
+A continuación explicamos por qué este orden para las filas y columnas de la matriz genera una matriz banda.
 
-
-\begin{figure}[h]
-  \includegraphics[width=\textwidth]{imagenes/matrizEjemplo.png}
-  %\caption{Matriz de ejemplo}
-  %\label{fig:corteHorno}
-\end{figure}
-
-
+En cada fila, salvo las primeras n y las últimas n, el coeficiente que acompaña a la incognita $T_{(j,k)}$ de la ecuación va a ser el elemento de la diagonal. Además, en cada fila van a aparecer los coeficientes no nulos $a_{(j-1,k)}$,$a_{(j+1,k)}$,$a_{(j,k-1)}$ y $a_{(j,k+1)}$.
+Los coeficientes $a_{(j-1,k)}$ y $a_{(j+1,k)}$ van a estar a una distancia de m+1 elementos de la diagonal, y los coeficientes $a_{(j,k-1)}$ y $a_{(j,k+1)}$ van a estar siempre a una distancia menor. Como esto se cumple para todas las filas, siempre van a haber dos diagonales formadas por los coeficientes mas lejanos al coeficiente de la diagonal, como se ve en la siguiente figura:
 
 \begin{figure}[h]
   \includegraphics[scale=0.4]{imagenes/figura1.png}
@@ -69,7 +49,7 @@ Y la matriz de coeficientes queda como la siguiente:\\
 \end{figure}
 
 %---------------------------------------------------------------------
-
+\newpage
 \subsection{Análisis de Coeficientes}
 A partir de las aproximaciones de las derivadas parciales de la función $T$ distribuimos los términos para conocer los coeficientes asociados a cada punto del cual depende el valor de la temperatura que queremos conocer para un $j,k$ dado. Se debe cumplir la siguiente ecuación: \\
 $$t_{(j-1, k)} (\frac{1}{\Delta^2_r}-\frac{1}{r \Delta_r}) +
@@ -152,6 +132,203 @@ Lo que es absurdo, pues A era diagonal dominante. El absurdo provino de suponer 
 %---------------------------------------------------------------------
 
 \subsubsection{A tiene factorización LU}
+
+
+Como sabemos que A es diagonal dominante, todas sus submatrices tambien lo cumplen. Por lo que probamos antes, todas sus submatrices son no singulares. 
+
+Por la propiedad: A tiene sus submatrices principales no singulares $\Leftrightarrow$ tiene factorización LU.
+
+Entonces nuestra matriz tiene factorización LU, y la eliminación gaussiana se puede hacer sin pivoteo.
+
+
+%---------------------------------------------------------------------
+
+
+\subsection{Implementación de los algoritmos}
+
+Nuestro programa comienza obteniendo los parámetros que son: un archivo de entrada, uno de salida y el método de triangulación. 
+
+Del archivo de entrada obtenemos los radios interno y externo, el m y n, la isoterma buscada, la cantidad de instancias y luego las temperaturas conocidas para cada instancia.  
+
+Luego calculamos los valores de los coeficientes de cada ecuación y creamos una matriz A $\in$ $R^{n*(m+1) X n*(m+1)}$ cuyos elementos estan ordenados con el orden que mencionamos anteriormente, para que sea una matriz banda.
+
+Dependiendo del método que corresponde, se hace la eliminación gaussiana o la factorización LU.
+
+\subsubsection{Implementación de Eliminación Gaussiana}
+
+Con la matriz A ya cargada (esto se hace una única vez), para cada instancia del problema, se carga un vector de términos independientes b $\in$ $R^{n*(m+1) X 1}$. La matriz A nunca se modifica (se hacen copias) para que se pueda usar la misma en cada instancia. 
+
+Para cada fila_{i}, se recorren los elementos de las filas inferiores (fila_{j} con i>j) restandoles la fila_{i} multiplicada por un coeficiente conveniente para que los elementos de fila_{j} queden en 0 hasta la columna iésima. Para los elementos que ya se sabe que deben valer 0 no se hace la cuenta, para evitar que aparezcan valores muy chicos y haya errores de precisión.
+
+Una vez que conseguimos la matriz triangulada, llamamos a la función de Backward Substitution que toma una matriz triangular superior y el vector b. Éste recorre las filas en orden ascendente despejando las incógnitas. 
+
+Vamos guardando los valores del vector X hallados de cada sistema de ecuaciones AX = b, en el archivo de salida. La complejidad de este algoritmo resulta ser O($(n*(m+1))^{3}$) por cada sistema. 
+
+%justificar por que es esa la comlejidad.
+
+\begin{algorithm}
+\caption{Eliminación Gaussiana}\label{euclid}
+\begin{algorithmic}[1]
+
+  \Function{GaussianElimination}{A, b}\Comment{con $A \in R^{(nxm)*(nxm)}$, $b \in R^{nxm}$}
+
+    \State $\textit{U} = \text{A.clone()}$
+
+    \For {$actual\_row = 0$ to $U.rows() - 2$}
+      \If {$U(actual\_row, actual\_row) == 0$} 
+        \Return
+      \EndIf
+
+      \For {$row = actual\_row + 1$ to $U.rows() - 1$}
+          \State $coefficient = U(row, actual\_row) / U(actual\_row, actual\_row)$
+          \For {$col = actual\_row$ to $U.cols() - 1$}
+            \If {$col == actual\_row$}  
+              \State $U(row,col) = 0$
+            \Else
+              \State $U(row, col) = U(row, col) - coefficient * U(actual\_row, col)$
+            \EndIf
+          \EndFor
+
+          \State $b(row) = b(row) - (coefficient * b(actual\_row)$
+      \EndFor    
+    \EndFor
+
+  \EndFunction
+
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+\caption{Backward Substitution}\label{euclid}
+\begin{algorithmic}[1]
+
+  \Function{Backward Substitution}{U, b}\Comment{con $U \in R^{(nxm)*(nxm)}$, $b \in R^{nxm}$}
+
+    \State $\textit{X} = \text{Mat(U.rows())}$
+
+    \For {$i = U.rows() - 1$ to $0$}
+      \State $acum = 0.0$
+
+      \For {$j = i+1$ to $U.rows() - 1$} 
+        \State $acum = acum + U(i, j) * X(j)$
+      \EndFor
+
+      \State $X(i) = b(i) - acum / U(i, i)$
+
+    \EndFor
+      
+  \EndFunction
+
+\end{algorithmic}
+\end{algorithm}
+
+
+\subsubsection{Implementación de Factorización LU}
+
+Por única vez y en un principio, con la matriz A ya cargada, se obtiene la matriz LU que es del mismo tamaño:
+De la misma manera que en la eliminación gaussiana, se obtiene la matriz triangulada U ,y tambien la matriz de coeficientes L. 
+
+\begin{algorithm}
+\caption{Generación de Matriz LU}\label{euclid}
+\begin{algorithmic}[1]
+
+  \Function{GetLU}{A, LU}\Comment{con $A \in R^{(nxm)*(nxm)}$, $LU \in R^{(nxm)*(nxm)}$}
+
+    \State $\textit{LU} = \text{A.clone()}$
+
+    \For {$actual\_row = 0$ to $LU.rows() - 2$}
+      \If {$LU(actual\_row, actual\_row) == 0$} 
+        \Return
+      \EndIf
+
+      \For {$row = actual\_row + 1$ to $LU.rows() - 1$}
+          \State $coefficient = LU(row, actual\_row) / LU(actual\_row, actual\_row)$
+          \For {$col = actual\_row$ to $LU.cols() - 1$}
+            \If {$col == actual\_row$}  
+              \State $LU(row,col) = coefficient$
+            \Else
+              \State $LU(row, col) = LU(row, col) - coefficient * LU(actual\_row, col)$
+            \EndIf
+          \EndFor
+
+      \EndFor    
+    \EndFor
+
+  \EndFunction
+
+\end{algorithmic}
+\end{algorithm}
+
+
+Sabemos que los elementos de la diagonal de L son todos 1 y es triangular inferior y la U es triangular superior. Entonces en la parte triangular superior de la matriz LU se guarda la U, y en la inferior (salvo la diagonal) se guarda la L.
+
+Para cada instancia, resolvemos el sistema de ecuaciones AX = b haciendo dos backward substitution. 
+
+El primero resuelve el sistema Ly = b despejando las incógnitas en forma descendiente de una matriz que es triangular inferior. Utiliza de la matriz LU solamente los elementos que corresponden a la L, teniendo en cuenta que los elementos de la diagonal deberían ser 1.
+
+
+\begin{algorithm}
+\caption{Backward Substitution LU}\label{euclid}
+\begin{algorithmic}[1]
+
+  \Function{Backward Substitution LU}{LU, b}\Comment{con $LU \in R^{(nxm)*(nxm)}$, $b \in R^{nxm}$}
+
+    \State $\textit{X} = \text{Mat(LU.rows())}$
+    \State $X(0) = b(0)$
+
+    \For {$i = 1$ to $LU.rows() - 1$}
+      \State $X(i) = b(i)$
+
+      \For {$j = 0$ to $i - 1$} 
+        \State $X(i) = X(i) - LU(i,j)*X(j)$
+      \EndFor
+
+    \EndFor
+      
+  \EndFunction
+
+\end{algorithmic}
+\end{algorithm}
+
+El segundo usa el mismo algoritmo que el backward substitution de la eliminación gaussiana para resolver el sistema Ux = y y hallar las incógnitas del sistema original. 
+
+Vamos guardando los valores del vector X hallados de cada sistema de ecuaciones AX = b, en el archivo de salida. La complejidad de este algoritmo resulta ser O($(n*(m+1))^{3}$) para la obtención de la matriz LU (la primera instancia) y O($(n*(m+1))^{2}$)
+por instancia posterior.
+%por que esta complejidad?
+
+
+\subsubsection{Obtención de la isoterma}
+
+El algoritmo que usamos para obtener los valores de los radios de la isoterma buscada, que usa la solución del sistema ya resuelto por medio de eliminación gaussiana o factorización LU, es el siguiente:
+
+\begin{algorithm}
+\caption{Obtención del radio de la isoterma}\label{euclid}
+\begin{algorithmic}[1]
+
+  \Function{getIsotermRadiusValues}{X, angles, isoterm, delta_r, ri}
+
+  \Comment{con $X \in R^{nxm}$, $angles \in N$, $isoterm, delta\_r, ri \in R$}
+
+    \State $double isotermRadious[angles]$
+
+    \For {$i = 0$ to $angles - 1$}
+      \State $isotermRadius[i] = -1$
+    \EndFor
+
+    \For {$i = 0$ to $X.rows() - angles - 1$}
+      \If {$X(i) >= isoterm \wedge X(i+angles) <= isoterm$}
+       \State $isotermRadius[i \% angles] = (ri + (i / angles)*delta\_r + (((X(i) - isoterm) * delta_r)/ (X(i) - X(i+angles)) ))$
+      \EndIf
+    \EndFor
+
+  \EndFunction
+
+\end{algorithmic}
+\end{algorithm}
+
+%explicar mas o menos este algoritmo y que complejidad tiene
+
+
 
 %---------------------------------------------------------------------
 
