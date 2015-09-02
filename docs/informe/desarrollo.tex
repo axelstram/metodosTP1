@@ -39,11 +39,14 @@ $$  t_{(j,k)} (-\frac{2}{\Delta^2_r}+\frac{1}{r \Delta_r}-\frac{2}{r^2 \Delta^2_
 Una vez planteadas estas ecuaciones para cada $ t_{(j,k)} $, resolvemos que el sistema $Ax = b$ estará formado por $n*m$ ecuaciones con la misma cantidad de incógnitas. El valor lo justificamos debido a la cantidad de combinaciones entre los índices j y k (cantidad de ángulos por cantidad de radios). Otra forma de razonar este resultado es pensando que en cada anillo generado por la partición del horno en \textbf{\textit{m + 1}} radios, habrá \textbf{\textit{n}} incógnitas generadas a su vez por la particion en ángulos. \\
 Esta cantidad incluye los valores $t_{(0,k)}$ y $t_{(n-1,k)}$ (los valores de temperatura en la pared interior y exterior respectivamente), por lo que en sus ecuaciones habrá un único coeficiente con valor 1 en la posición que corresponde a estas incógnitas y su valor b será el que se pase por parámetro. Para el resto de los $t_{(j,k)}$ los coeficientes corresponderan a los coeficientes descriptos en la ecuación de arriba, y su b será cero, también respetando dicha ecuación.
 
+
+%-------------------------------------------------------------------------
+
 \subsection{Orden de los coeficientes}
 
 Para conseguir una matriz banda, decidimos ordenar los coeficientes de manera creciente respecto al índice de los radios \textbf{\textit{j}} y luego respecto a \textbf{\textit{k}} el índice de los ángulos. Para ilustrar el orden impuesto, exponemos el siguiente ejemplo:
 
-Sea $\Delta_{r} = \Delta{\theta} = 1$, $\textbf{\textit{m + 1}} = \textbf{\textit{n}} = 3$ el orden resultante será 
+Sea $\Delta_{r} = 1$,  $\Delta{\theta} = \frac{\pi}{2}$, $\textbf{\textit{m + 1}} = \textbf{\textit{n}} = 4$ el orden resultante será 
 
 $$ t_{(0,0)} t_{(0,1)} t_{(0,2)} ...... t_{(2,0)} t_{(2,1)} t_{(2,2)} $$
 

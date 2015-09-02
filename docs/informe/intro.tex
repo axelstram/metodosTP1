@@ -3,12 +3,20 @@
 \subsection{El Problema y su representación}
 Queremos medir temperaturas de un horno industrial cilíndrico utilizado para fundir metales. Dicho horno tiene una pared interior y una exterior, cuyas temperaturas (la de las paredes) son conocidas en determinados puntos. Sabemos que la pared exterior tiene un límite de temperatura máxima, y nuestro objetivo es determinar si dicha temperatura máxima es alcanzada o no. Para ello, buscamos los puntos en el horno cuya temperatura alcance los 500 grados celcius.  Si esta temperatura es cercana al borde exterior se corre peligro por parte de los trabajadores de una hipotética fábrica que utilice dicho horno.
 
+
+\begin{wrapfigure}{r}{0.5\textwidth}
+  \vspace{-20pt}
+  \begin{center}
+    \includegraphics[scale= 0.4]{../hornoEjemplo.png}
+  \end{center}
+  \vspace{-20pt}
+  \caption{Temperatura de un horno.}
+  \vspace{-10pt}
+  \label{fig:corteHorno}
+\end{wrapfigure}
+
+
 El problema se reduce a determinar dónde se encuentra la isoterma 500 en un círculo, como el que se ve en la figura, que representa un corte del horno. Las pared externa del horno es la circunferencia, y la pared interna es la circunferencia del circulo interno.
-
-% agregar grafico que esta en el TPPPPPPPPPPPPPPPPPPPPPPPPPPP !!!!!!!!!!
-
-
-
 
 
 
@@ -35,4 +43,9 @@ El método Backward Substitution consiste en la obtención de los valores de las
 \subsubsection{Factorización LU}
 El algoritmo de Factorización LU surge ante el problema que se presenta cuando queremos resolver un sistema de ecuaciones similar a uno anteriormente resuelto. Dado el sistema de ecuaciones $Ax = b$, una vez obtenida la matriz triangulada, no queda registro alguno de las operaciones realizadas. Si estas fueran guardadas de alguna manera, podríamos reflejarlas en $b^{*}$  para cada nuevo sistema $Ax = b^{*}$. Repetir E.G. tendría un costo adicional de $O(n^{3})$, sin embargo con la factorización LU este costo solo se tiene una sola vez.
 
-%poner referencias a libros o algo de estos algoritmos.
+
+\subsection{Bibliografía}
+
+\begin{itemize}
+\item Burden y J.D.Faires, Análisis numérico, International Thomson Editors
+\end{itemize}
