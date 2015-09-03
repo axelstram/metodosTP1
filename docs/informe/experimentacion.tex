@@ -1,9 +1,9 @@
 \section{Experimentación}
 
 Queremos ver empíricamente que las complejidades de los algoritmos es la cota teórica demostrada en la sección de desarrollo. Para esto se diseñaron una serie de tests que fueron generados con el programa \textit{generatetest.py}. En estos, el ángulo fue fijado en $10$, y el radio ($m$) fue variando entre $5$ y $80$.
-Y cada uno tiene $40$ instancias en las que los valores de las paredes internas y externas son aleatorios y varían en un determinado valor respecto de los valores adyacentes.
+Cada archivo de test tiene $40$ instancias en las que los valores de las paredes internas y externas son aleatorios y varían en un determinado valor respecto de los valores adyacentes.
 
-Como lo que nos interesa medir es el tiempo de ejecución y éste depende del tamaño de la matriz, con variar $n$ o $m$ ya basta para ver como aumentan los tiempos respecto del tamaño.
+Como lo que nos interesa medir es el tiempo de ejecución y éste depende del tamaño de la matriz, con variar $n$ o $m$ ya basta para ver como aumentan los tiempos en función del tamaño.
 
 Los tests fueron corridos en una CPU Intel I5-760 de 2.80 Ghz.
 
@@ -18,7 +18,7 @@ Para el siguiente gráfico lo que hicimos fue dividir el tiempo de ejecución ($
   \label{fig:egdivididom2}
 \end{figure}
 
-En el próximo gráfico, lo que hicimos fue considerar 2 casos: contando el tiempo de obtención de las matrices L y U, y sin contarlo. En ambos casos dividimos el tiempo de ejecución por $m$. En el primer caso, al dividir por $m$, el gráfico crece de manera parabólica, ya que el tiempo que tarda el algoritmo en obtener las matrices L y U es $O(m^{3})$. Por lo tanto, al dividir por m, el tiempo de ejecución debería crecer de forma cuadrática, lo cual se puede observar en el gráfico. 
+En el gráfico a continuación, lo que hicimos fue considerar 2 casos: contando el tiempo de obtención de las matrices L y U, y sin contarlo. En ambos casos dividimos el tiempo de ejecución por $m$. En el primer caso, al dividir por $m$, el gráfico crece de manera parabólica, ya que el tiempo que tarda el algoritmo en obtener las matrices L y U es $O(m^{3})$. Por lo tanto, al dividir por m, el tiempo de ejecución debería crecer de forma cuadrática, lo cual se puede observar en el gráfico. 
 
 
 \begin{figure}[h]
@@ -32,7 +32,7 @@ En el próximo gráfico, lo que hicimos fue considerar 2 casos: contando el tiem
 En el segundo caso no se tuvo en cuenta el tiempo de obtención de las matrices L y U, por lo tanto el tiempo de ejecución del algoritmo es $O(m^{2})$, y al dividir todo por $m$, obtenemos una recta, como se puede observar. \\
 
 
-Por último vamos a comparar directamente el tiempo de ejecución de la eliminación gaussiana contra el tiempo de ejecución de LU (contando el tiempo de obtención de las matrices). En este caso los tiempos de ejecución no fueron divididos por $m$ ya que solamente queríamos poder comparar a grandes rasgos las diferencias entre los tiempos de ejecución de ambos algoritmos. Por más que ambos algoritmos son $O(m^{3})$, se puede observar que la eliminación gaussiana toma considerablemente más tiempo, lo cual nos confirma empíricamente la importancia de guardarnos las matrices L y U a la hora de resolver un sistema de ecuaciones.
+Por último vamos a comparar directamente el tiempo de ejecución de la eliminación gaussiana contra el tiempo de ejecución de LU (contando el tiempo de obtención de la matriz LU). En este caso los tiempos de ejecución no fueron divididos por $m$ ya que solamente queríamos poder comparar a grandes rasgos las diferencias entre los tiempos de ejecución de ambos algoritmos. Por más que ambos algoritmos son $O(m^{3})$, se puede observar que la eliminación gaussiana toma considerablemente más tiempo, lo cual nos confirma empíricamente la importancia de guardarnos las matrices L y U a la hora de resolver un sistema de ecuaciones.
 
 \newpage
 
