@@ -1,8 +1,13 @@
 \section{Experimentación}
 
-Queremos ver empíricamente que las complejidades de los algoritmos es la cota teórica demostrada en la sección de desarrollo. Para esto se diseñaron una serie de tests que fueron generados con el programa \textit{generatetest.py}. En estos, el ángulo fue fijado en $10$, y el radio ($m$) fue variando entre $5$ y $80$. Los mismos fueron corridos en una CPU Intel I5-760 de 2.80 Ghz.
+Queremos ver empíricamente que las complejidades de los algoritmos es la cota teórica demostrada en la sección de desarrollo. Para esto se diseñaron una serie de tests que fueron generados con el programa \textit{generatetest.py}. En estos, el ángulo fue fijado en $10$, y el radio ($m$) fue variando entre $5$ y $80$.
+Y cada uno tiene $40$ instancias en las que los valores de las paredes internas y externas son aleatorios y varían en un determinado valor respecto de los valores adyacentes.
 
-Para medir el tiempo, corrimos $40$ instancias para cada $m$ y tomamos el promedio, para evitar que la presencia de outliers influyera de manera significativa en los tiempos de ejecución. No tuvimos en cuenta los tiempos de carga.
+Como lo que nos interesa medir es el tiempo de ejecución y éste depende del tamaño de la matriz, con variar $n$ o $m$ ya basta para ver como aumentan los tiempos respecto del tamaño.
+
+Los tests fueron corridos en una CPU Intel I5-760 de 2.80 Ghz.
+
+Medimos para cada test el tiempo total en resolver las 40 instancias, para evitar que la presencia de outliers influyera de manera significativa en los tiempos de ejecución. No tuvimos en cuenta los tiempos de carga de las matrices y vectores.
 
 Para el siguiente gráfico lo que hicimos fue dividir el tiempo de ejecución ($O(m^{3})$) por $m^{2}$, para de esta manera obtener el gráfico de una recta y probar efectivamente que el tiempo de ejecución real del algoritmo de Eliminación Gaussiana es el dicho anteriormente.
 

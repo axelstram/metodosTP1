@@ -340,3 +340,16 @@ El algoritmo que usamos para obtener los valores de los radios de la isoterma bu
 \item Problemas de precisión numérica. Inicialmente los resultados de los\ tests diferían con los resultados de la cátedra. Debido a los problemas inherentes a la aritmética de punto flotante, comenzamos experimentando con distintas maneras de realizar la sumatoria (ordenando los números de mayor a menor y de menor a mayor), ya que pensabamos que estabamos arrastrando un error. Descubrimos que las distintas maneras de realizar las sumatorias diferían en menos de $0,00001$, por lo que concluímos que no estabamos arrastrando errores en las cuentas. Finalmente descubrimos que el error estaba en que la variable $m$ en realidad era $m+1$, y no teníamos eso en cuenta a la hora de calcular $\Delta r$.
 
 \end{itemize}
+
+
+\subsection{Optimizaciones no realizadas}
+
+Durante el desarrollo del TP, quisimos implementar el punto opcional, el cuál consistía en aprovechar, en cuanto a \textit{complejidad espacial}, la estructura banda de la matriz, pero no pudimos por falta de tiempo. 
+
+Con respecto al punto opcional, dado que la matriz es "poco densa" (sparse), una posible optimización consistía en no guardar los ceros fuera de la banda, y los ceros que hay entre las 3 bandas, ya que son siempre una cantidad mínima fija.
+Para esto, los algoritmos de EG y factorización LU deben ser adaptados para tener esto en cuenta, chequeando a cada paso si estan trabajando con algún elemento de las bandas o con algún cero implícito no guardado en la matriz A.
+Con el espacio ahorrado en la matriz A, compensamos el espacio que se requiere para la matriz LU, por lo cual nos terminaría resultando gratis en cuanto a memoria.
+
+También realizamos algunos experimentos que no resultaron como esperabamos ya que estaban basados en hipótesis incorrectas.
+
+%ACA VA DE LO JAVI
