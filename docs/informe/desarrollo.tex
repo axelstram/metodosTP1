@@ -3,7 +3,7 @@
 \subsection{Planteo del Sistema}
 
 
-La temperatura en un punto $t_{(j,k)}$, con $j \in [0, m]$ y $k \in [0, n)$ estará determinado por la ecuación de Laplace descripta a continuación:
+La temperatura en un punto $t_{(j,k)}$, con $j \in [0, m]$ y $k \in [0, n)$ estará determinada por la ecuación de Laplace descripta a continuación:
 
 
 $$ \frac{\partial^{2}T(r,\theta)}{\partial r^{2}} + \frac{1}{r} \frac{\partial T(r,\theta)}{\partial r} + \frac{1}{r^{2}} \frac{\partial^{2}T(r,\theta)}{\partial \theta^{2}} = 0$$\\
@@ -20,7 +20,7 @@ Despejamos las incógnitas $t_{(j,k)}$, $t_{(j+1,k)}$, $t_{(j-1,k)}$, $t_{(j,k+1
 $$  t_{(j,k)} (-\frac{2}{\Delta^2_r}+\frac{1}{r \Delta_r}-\frac{2}{r^2 \Delta^2_\theta}) + t_{(j+1,k)} (\frac{1}{\Delta^2_r}) + t_{(j-1,k)} (\frac{1}{\Delta^2_r}-\frac{1}{r \Delta_r}) + t_{(j,k+1)} (\frac{1}{r^2 \Delta^2_\theta}) + t_{(j,k-1)} (\frac{1}{r^2 \Delta^2_\theta}) = 0$$ \\
 
 
-Una vez planteadas estas ecuaciones para cada $ t_{(j,k)} $, resolvemos que el sistema $Ax = b$ estará formado por $n*m$ ecuaciones con la misma cantidad de incógnitas. El valor lo justificamos debido a la cantidad de combinaciones entre los índices j y k (cantidad de ángulos por cantidad de radios). Otra forma de razonar este resultado es pensando que en cada anillo generado por la partición del horno en \textbf{\textit{m + 1}} radios, habrá \textbf{\textit{n}} incógnitas generadas a su vez por la particion en ángulos. \\
+Una vez planteadas estas ecuaciones para cada $ t_{(j,k)} $, llegamos a que el sistema $Ax = b$ estará formado por $n*m$ ecuaciones con la misma cantidad de incógnitas. El valor lo justificamos debido a la cantidad de combinaciones entre los índices j y k (cantidad de ángulos por cantidad de radios). Otra forma de razonar este resultado es pensando que en cada anillo generado por la partición del horno en \textbf{\textit{m + 1}} radios, habrá \textbf{\textit{n}} incógnitas generadas a su vez por la particion en ángulos. \\
 Esta cantidad incluye los valores $t_{(0,k)}$ y $t_{(n-1,k)}$ (los valores de temperatura en la pared interior y exterior respectivamente), por lo que en sus ecuaciones habrá un único coeficiente con valor 1 en la posición que corresponde a estas incógnitas y su valor b será el que se pase por parámetro. Para el resto de los $t_{(j,k)}$ los coeficientes corresponderan a los coeficientes descriptos en la ecuación de arriba, y su b será cero, también respetando dicha ecuación.
 
 
@@ -30,7 +30,7 @@ Esta cantidad incluye los valores $t_{(0,k)}$ y $t_{(n-1,k)}$ (los valores de te
 
 %que es una matriz banda
 
-Para conseguir una matriz banda, decidimos ordenar los coeficientes de manera creciente respecto al índice de los radios \textbf{\textit{j}} y luego respecto a \textbf{\textit{k}} el índice de los ángulos. Para ilustrar el orden impuesto, exponemos el siguiente ejemplo:
+Para conseguir una matriz banda, decidimos ordenar los coeficientes de manera creciente respecto al índice de los radios \textbf{\textit{j}} y luego respecto a \textbf{\textit{k}}, el índice de los ángulos. Para ilustrar el orden impuesto, exponemos el siguiente ejemplo:
 
 Sea $\Delta_{r} = 1$,  $\Delta{\theta} = \frac{\pi}{2}$, $\textbf{\textit{m + 1}} = \textbf{\textit{n}} = 4$ el orden resultante será 
 
@@ -44,7 +44,7 @@ Los coeficientes $a_{(j-1,k)}$ y $a_{(j+1,k)}$ van a estar a una distancia de m+
 
 \begin{figure}[h]
   \includegraphics[scale=0.4]{imagenes/figura1.png}
-  \caption{La figura}
+  \caption{Matriz banda}
   \label{fig:corteHorno}
 \end{figure}
 
@@ -158,7 +158,7 @@ Dependiendo del método que corresponde, se hace la eliminación gaussiana o la 
 
 Con la matriz A ya cargada (esto se hace una única vez), para cada instancia del problema, se carga un vector de términos independientes b $\in$ $R^{n*(m+1) X 1}$. La matriz A nunca se modifica (se hacen copias) para que se pueda usar la misma en cada instancia. 
 
-Para cada fila_{i}, se recorren los elementos de las filas inferiores (fila_{j} con i>j) restandoles la fila_{i} multiplicada por un coeficiente conveniente para que los elementos de fila_{j} queden en 0 hasta la columna iésima. Para los elementos que ya se sabe que deben valer 0 no se hace la cuenta, para evitar que aparezcan valores muy chicos y haya errores de precisión.
+Para cada $fila_{i}$, se recorren los elementos de las filas inferiores ($fila_{j}$ con $i>j$) restandoles la $fila_{i}$ multiplicada por un coeficiente conveniente para que los elementos de $fila_{j}$ queden en 0 hasta la columna iésima. Para los elementos que ya se sabe que deben valer 0 no se hace la cuenta, para evitar que aparezcan valores muy chicos y haya errores de precisión.
 
 Una vez que conseguimos la matriz triangulada, llamamos a la función de Backward Substitution que toma una matriz triangular superior y el vector b. Éste recorre las filas en orden ascendente despejando las incógnitas. 
 
@@ -292,8 +292,8 @@ El primero resuelve el sistema Ly = b despejando las incógnitas en forma descen
 
 El segundo usa el mismo algoritmo que el backward substitution de la eliminación gaussiana para resolver el sistema Ux = y y hallar las incógnitas del sistema original. 
 
-Vamos guardando los valores del vector X hallados de cada sistema de ecuaciones AX = b, en el archivo de salida. La complejidad de este algoritmo resulta ser O($(n*(m+1))^{3}$) para la obtención de la matriz LU (la primera instancia) y O($(n*(m+1))^{2}$)
-por instancia posterior.
+Vamos guardando los valores del vector X hallados de cada sistema de ecuaciones AX = b, en el archivo de salida. La complejidad de este algoritmo resulta ser O($(n*(m+1))^{3}$) para la obtención de la matriz LU (que se realiza solo para la primera instancia) y O($(n*(m+1))^{2}$)
+por cada instancia posterior.
 %por que esta complejidad?
 
 
