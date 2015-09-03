@@ -254,6 +254,13 @@ void getIsotermRadiusValues(Mat& X, int angles, double isoterm, double delta_r, 
 	* Guardo en el vector istermRadius, en la posicion i el radio de la isterma 500 para cada angulo.
 	*/
 	vector<double> isotermRadius(angles);
+	vector<double> Xinvert(X.rows());
+	
+	for (int i = 0; i < X.rows(); ++i)
+	{
+		Xinvert[i]=X(X.rows()-1-i,0);
+	}
+
 
 	for (int i = 0; i < angles; ++i)
 	{
@@ -263,8 +270,8 @@ void getIsotermRadiusValues(Mat& X, int angles, double isoterm, double delta_r, 
 	for (int i = 0; i < X.rows() - angles; ++i)
 	{
 		// Encontre la isoterma cuando el punto actual es menor a la isoterma y el siguiente es mayor. El || es para el caso en que esten invertidos los valores (mas frio adentro)
-		if( (X(i,0) >= isoterm && X(i+angles,0) <= isoterm) || (X(i,0) <= isoterm && X(i+angles,0) >= isoterm) )
-			isotermRadius[i % angles] = ( ri + (i / angles)*delta_r + (((X(i,0) - isoterm) * delta_r)/ (X(i,0) - X(i+angles,0)) )); // regla de tres simple
+		if( (Xinvert[i] >= isoterm && Xinvert[i+angles] <= isoterm) || (Xinvert[i] <= isoterm && Xinvert[i+angles] >= isoterm) )
+			isotermRadius[i % angles] = ( ri + (i / angles)*delta_r + (((Xinvert[i] - isoterm) * delta_r)/ (Xinvert[i] - Xinvert[i+angles]) )); // regla de tres simple
 	}
 
 	for (int i = 0; i < angles; ++i)
