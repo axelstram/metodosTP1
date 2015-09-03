@@ -60,7 +60,7 @@ Dada una matriz A $\in R^{nxn}$ queremos resolver el sistema $Ax = b$. El algori
 El método Backward Substitution consiste en la obtención de los valores de las incógnitas a partir de la matriz triangulada. El método recorre cada fila de esta matriz en orden decreciente en filas. Con lo que el despeje de las incógnitas simplemente consiste en despejar el valor de la diagonal respecto al resto de los valores ya obtenidos en iteraciones anteriores.
 
 \subsubsection{Factorización LU}
-El algoritmo de Factorización LU surge ante el problema que se presenta cuando queremos resolver un sistema de ecuaciones similar a uno anteriormente resuelto. Dado el sistema de ecuaciones $Ax = b$, una vez obtenida la matriz triangulada, no queda registro alguno de las operaciones realizadas. Si estas fueran guardadas de alguna manera, podríamos reflejarlas en $b^{*}$  para cada nuevo sistema $Ax = b^{*}$. Repetir E.G. tendría un costo adicional de $O(n^{3})$, sin embargo con la factorización LU este costo solo se tiene una sola vez.
+El algoritmo de Factorización LU surge ante el problema que se presenta cuando queremos resolver un sistema de ecuaciones similar a uno anteriormente resuelto. Dado el sistema de ecuaciones $Ax = b$, una vez obtenida la matriz triangulada, no queda registro alguno de las operaciones realizadas. Si estas fueran guardadas de alguna manera, podríamos reflejarlas en $b^{*}$  para cada nuevo sistema $Ax = b^{*}$. Repetir E.G. tendría un costo adicional de $O(n^{3})$, sin embargo con la factorización LU este costo solo se tiene una única vez.
 
 
 \subsection{Bibliografía}
