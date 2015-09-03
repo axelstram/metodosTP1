@@ -307,9 +307,9 @@ El algoritmo que usamos para obtener los valores de los radios de la isoterma bu
 
   \Function{getIsotermRadiusValues}{X, angles, isoterm, delta_r, ri}
 
-  \Comment{con $X \in R^{nxm}$, $angles \in N$, $isoterm, delta\_r, ri \in R$}
-
-    \State $double isotermRadious[angles]$
+  \Comment{con $X\_s \in R^{nxm}$, $angles \in N$, $isoterm, delta\_r, ri \in R$}
+    \State $X = X\_s.reverseOrder()$
+    \State $isotermRadious[angles]$
 
     \For {$i = 0$ to $angles - 1$}
       \State $isotermRadius[i] = -1$
@@ -327,7 +327,7 @@ El algoritmo que usamos para obtener los valores de los radios de la isoterma bu
 \end{algorithm}
 
 %explicar mas o menos este algoritmo y que complejidad tiene
-Primero asignamos valores centinelas al vector $isotermRadius$, donde guardaremos el valor del radio de la isoterma para cada angulo. Si no se encuentra la isoterma para un angulo dado, el vector tendrá un -1 para ese angulo, indicando un error. Esto puede suceder cuando el valor externo de la temperatura es estrictamente mayor al valor de la isoterma buscada. \\
+Primero invertimos el orden del vector solución para que empiece a tomar los valores más internos y luego los mas externos. Asignamos valores centinelas al vector $isotermRadius$, donde guardaremos el valor del radio de la isoterma para cada angulo. Si no se encuentra la isoterma para un angulo dado, el vector tendrá un -1 para ese angulo, indicando un error. Esto puede suceder cuando el valor externo de la temperatura es estrictamente mayor al valor de la isoterma buscada. \\
 \begin{wrapfigure}{l}{0.5\textwidth}
   \vspace{-20pt}
   \begin{center}
@@ -343,7 +343,7 @@ Luego se itera para cada angulo del horno, el valor de la temperatura para el pu
 Para el caso de la implementación, el punto siguiente ($j+1$) se calcula como $j+angulos$ porque en la matriz columna $X$, se guardan las temperaturas de los primeros $n$ radios más internos, luego los $n$ radios que le siguen, así sucesivamente hasta llegar a los $n$ radios externos. Por esta misma razón, se toma $j \% angles$ como subindice para el vector.\\
 Para el experimento en que la instancia tiene los valores de la temperatura interna menores a los de la externa, la condición de la línea 5 deben darse vuelta las desigualdades (puesto que estamos utilizando fuertemente que las temperaturas internas son mayores a las externas).\\
 
-Para una instancia dada, se tienen $n$ angulos y $m+1$ radios. El $for$ de la linea 3 tiene complejidad O($n$) y el $for$ de la linea 5 tiene complejidad O($n*(m+1)$), puesto que se recorren todos los radios de todos los angulos. Las operaciones de ambos $for$ don O($1$). Como resultado final, la complejidad del algoritmo es O($n*(m+1)$). Se puede disminuir la complejidad a O($n*log(m+1)$) si se hiciera una busqueda binaria para encontrar los radios entre los que se encuentra la isoterma. Optamos por no tomar esta opción por simplicidad ya que el recorrido de los indices no es trivial, además que la mejora temporal introducida por el logaritmo no mejora la complejidad total dado que los algoritmos de eliminación Gaussiana y LU son del orden cúbico.
+Para una instancia dada, se tienen $n$ angulos y $m+1$ radios. La función de la línea 3 (reverseOrder()) devuelve una copia del vector solución pero con los valores ordenados al revéz. Esto tiene un costo de O($n*(m+1)$). El $for$ de la linea 4 tiene complejidad O($n$) y el $for$ de la linea 6 tiene complejidad O($n*(m+1)$), puesto que se recorren todos los radios de todos los angulos. Las operaciones de ambos $for$ don O($1$). Como resultado final, la complejidad del algoritmo es O($n*(m+1)$). Se puede disminuir la complejidad a O($n*log(m+1)$) si se hiciera una busqueda binaria para encontrar los radios entre los que se encuentra la isoterma. Optamos por no tomar esta opción por simplicidad ya que el recorrido de los indices no es trivial, además que la mejora temporal introducida por el logaritmo no mejora la complejidad total dado que los algoritmos de eliminación Gaussiana y LU son del orden cúbico.
 
 
 
