@@ -315,9 +315,9 @@ El algoritmo que usamos para obtener los valores de los radios de la isoterma bu
       \State $isotermRadius[i] = -1$
     \EndFor
 
-    \For {$i = 0$ to $X.rows() - angles - 1$}
-      \If {$X(i) >= isoterm \wedge X(i+angles) <= isoterm$}
-       \State $isotermRadius[i \% angles] = (ri + (i / angles)*delta\_r + (((X(i) - isoterm) * delta_r)/ (X(i) - X(i+angles)) ))$
+    \For {$j = 0$ to $X.rows() - angles - 1$}
+      \If {$X(j) >= isoterm \wedge X(j+angles) <= isoterm$}
+       \State $isotermRadius[j \% angles] = (ri + (j / angles)*delta\_r + (((X(j) - isoterm) * delta_r)/ (X(j) - X(j+angles)) ))$
       \EndIf
     \EndFor
 
@@ -327,6 +327,24 @@ El algoritmo que usamos para obtener los valores de los radios de la isoterma bu
 \end{algorithm}
 
 %explicar mas o menos este algoritmo y que complejidad tiene
+Primero asignamos valores centinelas al vector $isotermRadius$, donde guardaremos el valor del radio de la isoterma para cada angulo. Si no se encuentra la isoterma para un angulo dado, el vector tendrá un -1 para ese angulo, indicando un error. Esto puede suceder cuando el valor externo de la temperatura es estrictamente mayor al valor de la isoterma buscada. \\
+\begin{wrapfigure}{l}{0.5\textwidth}
+  \vspace{-20pt}
+  \begin{center}
+    \includegraphics[scale= 0.6]{imagenes/radiosLimpio.png}
+  \end{center}
+  \vspace{-20pt}
+  \caption{Seccion de horno}
+  \vspace{-10pt}
+  \label{fig:Exp3}
+\end{wrapfigure}
+
+Luego se itera para cada angulo del horno, el valor de la temperatura para el punto $j$ y el $j+1$ como se ve en el gráfico, buscando si entre esos dos valores se encuentra la isoterma buscada. Una vez encontrados esos puntos, se le asigna el valor del radio estimado de la isoterma. Para esto, utilizamos una regla de tres simple: $ri + j *\Delta_r $ es el valor del radio para el punto $j$. Luego planteamos que, si entre el punto $j$ y el $j+1$ (que tienen una diferencia de radio $\Delta_r$) hay una diferencia de temperatura de $T(j) - T(j+1)$, cual sería el valor del radio si la diferencia es de $T(j) - isoterma$. Luego se le suma ese valor al radio del punto $j$.\\
+Para el caso de la implementación, el punto siguiente ($j+1$) se calcula como $j+angulos$ porque en la matriz columna $X$, se guardan las temperaturas de los primeros $n$ radios más internos, luego los $n$ radios que le siguen, así sucesivamente hasta llegar a los $n$ radios externos. Por esta misma razón, se toma $j \% angles$ como subindice para el vector.\\
+Para el experimento en que la instancia tiene los valores de la temperatura interna menores a los de la externa, la condición de la línea 5 deben darse vuelta las desigualdades (puesto que estamos utilizando fuertemente que las temperaturas internas son mayores a las externas).\\
+
+Para una instancia dada, se tienen $n$ angulos y $m+1$ radios. El $for$ de la linea 3 tiene complejidad O($n$) y el $for$ de la linea 5 tiene complejidad O($n*(m+1)$), puesto que se recorren todos los radios de todos los angulos. Las operaciones de ambos $for$ don O($1$). Como resultado final, la complejidad del algoritmo es O($n*(m+1)$). Se puede disminuir la complejidad a O($n*log(m+1)$) si se hiciera una busqueda binaria para encontrar los radios entre los que se encuentra la isoterma. Optamos por no tomar esta opción por simplicidad ya que el recorrido de los indices no es trivial, además que la mejora temporal introducida por el logaritmo no mejora la complejidad total dado que los algoritmos de eliminación Gaussiana y LU son del orden cúbico.
+
 
 
 
@@ -340,16 +358,3 @@ El algoritmo que usamos para obtener los valores de los radios de la isoterma bu
 \item Problemas de precisión numérica. Inicialmente los resultados de los\ tests diferían con los resultados de la cátedra. Debido a los problemas inherentes a la aritmética de punto flotante, comenzamos experimentando con distintas maneras de realizar la sumatoria (ordenando los números de mayor a menor y de menor a mayor), ya que pensabamos que estabamos arrastrando un error. Descubrimos que las distintas maneras de realizar las sumatorias diferían en menos de $0,00001$, por lo que concluímos que no estabamos arrastrando errores en las cuentas. Finalmente descubrimos que el error estaba en que la variable $m$ en realidad era $m+1$, y no teníamos eso en cuenta a la hora de calcular $\Delta r$.
 
 \end{itemize}
-
-
-\subsection{Optimizaciones no realizadas}
-
-Durante el desarrollo del TP, quisimos implementar el punto opcional, el cuál consistía en aprovechar, en cuanto a \textit{complejidad espacial}, la estructura banda de la matriz, pero no pudimos por falta de tiempo. 
-
-Con respecto al punto opcional, dado que la matriz es "poco densa" (sparse), una posible optimización consistía en no guardar los ceros fuera de la banda, y los ceros que hay entre las 3 bandas, ya que son siempre una cantidad mínima fija.
-Para esto, los algoritmos de EG y factorización LU deben ser adaptados para tener esto en cuenta, chequeando a cada paso si estan trabajando con algún elemento de las bandas o con algún cero implícito no guardado en la matriz A.
-Con el espacio ahorrado en la matriz A, compensamos el espacio que se requiere para la matriz LU, por lo cual nos terminaría resultando gratis en cuanto a memoria.
-
-También realizamos algunos experimentos que no resultaron como esperabamos ya que estaban basados en hipótesis incorrectas.
-
-%ACA VA DE LO JAVI
